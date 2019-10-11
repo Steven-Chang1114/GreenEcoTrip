@@ -1,43 +1,84 @@
 <template>
-  <div class="binding" v-title data-title="绑定账号">
-    <div class="bindingbtn">
-      <input type="text" v-model="city"/>
-    </div>
-    <div v-show="isshow">
-      <p v-for="item in selectCitys" :key = "item">{{item}}</p>
-    </div>
-  </div>
+ <el-row class="demo-autocomplete">
+  <el-col :span="12">
+    <p><b>From</b></p>
+    <el-autocomplete
+      class="inline-input"
+      v-model="state1"
+      :fetch-suggestions="querySearch"
+      placeholder="City"
+      :trigger-on-focus="false"
+      @select="handleSelect"
+    ></el-autocomplete>
+  </el-col>
+
+  <el-col :span="12">
+    <p><b>To</b></p>
+    <el-autocomplete
+      id = "1"
+      class="inline-input"
+      v-model="state2"
+      :fetch-suggestions="querySearch"
+      placeholder="City"
+      :trigger-on-focus="false"
+      @select="handleSelect"
+    ></el-autocomplete>
+  </el-col>
+</el-row>
 </template>
 <script>
 
 export default {
-  data () {
-    return {
-      isshow:true,
-      city:"",
-      citys:['Shanghai','London','Edinburgh','Barcelona','Beijing','Tokyo','New York','Manchester','Valencia','Madrid','Paris'],
-      selectCitys:[]
-    }
-  },
-  name: 'FTD',
-  methods:{
-    
-  },
-  watch:{
-    city:function(val, oldVal){
-      if(val.length==0){
-         this.isshow = false
-       }else{
-          this.isshow = true;
-          var citys = []
-          this.citys.forEach((item,index) => {
-              if(item.indexOf(val)>=0){
-                  citys.unshift(item)
-              }
-          })  
-          this.selectCitys = citys;
-       }
+    name: "FTD",
+    data() {
+      return {
+        links: [],
+        state1: '',
+        state2: ''
+      };
+    },
+    methods: {
+      querySearch(queryString, cb) {
+        var links = this.links;
+        var results = queryString ? links.filter(this.createFilter(queryString)) : links;
+        // call callback function to return suggestions
+        cb(results);
+      },
+      createFilter(queryString) {
+        return (link) => {
+          return (link.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
+      },
+      loadAll() {
+        return [
+          { "value": "Shanghai"},
+          { "value": "Beijing"},
+          { "value": "Hongkong"},
+          { "value": "London"},
+          { "value": "Edinburgh"},
+          { "value": "Manchester"},
+          { "value": "Barcelona"},
+          { "value": "Valencia"},
+          { "value": "Paris"},
+          { "value": "Glascow"},
+          { "value": "Madrid"}
+         ];
+      },
+      handleSelect(item) {
+        console.log(item);
+      }
+    },
+    mounted() {
+      this.links = this.loadAll();
     }
   }
-}
 </script>
+
+<style>
+.demo-autocomplete{
+  margin-top: 30px;
+}
+#id{
+  margin-right: 60000px;
+}
+</style>
