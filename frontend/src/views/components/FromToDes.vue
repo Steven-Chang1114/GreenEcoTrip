@@ -26,7 +26,7 @@
     ></el-autocomplete>
   </el-col>
   <el-col :span="6">
-    <Date id = "date"/>
+    <Date id = "date" showTop/>
   </el-col>
 </el-row>
 <router-link to="/result"><el-button v-on:click="makeOrder" type="success" id = "submit" plain><h3>Let's start the trip!<i class="el-icon-magic-stick"></i></h3></el-button></router-link>
@@ -35,7 +35,6 @@
 </template>
 <script>
 import Date from './Date.vue'
-import { mapState } from 'vuex'
 
 export default {
   components:{
@@ -74,9 +73,6 @@ export default {
         { "value": "Madrid"}
         ];
     },
-    handleSelect(item) {
-      console.log(item);
-    }
   },
   mounted() {
     this.links = this.loadAll();
