@@ -27,12 +27,21 @@ def place_autosuggest(country, currency, locale, query):
 
 
 def get_route_average_emission(origin, destination):
-    url = 'https://www.skyscanner.net/g/chiron/api/v1/eco/average-emissions?routes=(%s, %s)' % (origin, destination)
+    url = 'https://www.skyscanner.net/g/chiron/api/v1/eco/average-emissions?routes=%s,%s' % (origin, destination)
     response = requests.get(url, headers={'api-key': 'skyscanner-hackupc2019'})
 
     if response.status_code == 200:
         emission = response.json()
         return emission
+
+
+def calculate_flight_emission(leg):
+    duration = 0
+    for seg in leg['SegmentIds'][:-1]:
+        duration += seg['Duration']
+
+    hours = duration / 60
+    return hours * 800 * 0.202
 
 
 class LiveResults:
@@ -86,17 +95,15 @@ class LiveResults:
 
     def filter_results(self, page_index=0):
         url = "https://www.skyscanner.net/g/chiron/api/v1/flights/search/pricing/v1.0?session_id={}" \
-            "?pageIndex={}".format(self.response_key, page_index)
+              "?pageIndex={}".format(self.response_key, page_index)
 
         results = requests.get(url=url, headers=self.get_headers)
-
         try:
             results = ResultTransformer(results.json()).transform_results()
         except json.decoder.JSONDecodeError:
             self.filter_results()
 
         return sorted(results, key=lambda r: r['PricingOptions'][0]['Price'])
-
 
 
 if __name__ == '__main__':

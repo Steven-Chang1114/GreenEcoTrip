@@ -3,18 +3,14 @@ from skyscanner_api_calls import place_autosuggest
 import time
 
 
-def get_flights_datas (cluster_d, cluster_a):
+def get_flights_datas(cluster_d, cluster_a):
+    # for every city in the departure cluster, send request to Skyscanner
+    # return: the datas from skyskanner (used in binarymatrix.py)
 
-
-
-    #for every city in the departure cluster, send request to Skyscanner
-    #return: the datas from skyskanner (used in binarymatrix.py)
-
-    results=[]
+    results = []
 
     for departure in cluster_d:
         for arrival in cluster_a:
-
             country = 'UK'
             currency = 'EUR'
             locale = 'en-UK'
@@ -37,34 +33,37 @@ def get_flights_datas (cluster_d, cluster_a):
             }
 
             obj = LiveResults(params)
-            obj.poll_results()
-            results.append(obj.filter_results())
-
+            obj.create_session()
+            #obj.poll_results()
+            results.append(obj.filter_results() + obj.filter_results(1))
+            print("Ye")
 
     return results
+
 
 if __name__ == '__main__':
     country = 'UK'
     currency = 'EUR'
     locale = 'en-UK'
     print(type(place_autosuggest(country, currency, locale, 'Paris')[0]))
-    D = [ place_autosuggest(country, currency, locale, 'Paris')[0] , place_autosuggest(country, 'EUR', locale, 'Berlin')[0]  ]
-    A = [ place_autosuggest(country, currency, locale, 'Manchester')[0],place_autosuggest(country, 'EUR', locale, 'London')[0] ]
+    D = [place_autosuggest(country, currency, locale, 'Paris')[0],
+         place_autosuggest(country, 'EUR', locale, 'Berlin')[0]]
+    A = [place_autosuggest(country, currency, locale, 'Manchester')[0],
+         place_autosuggest(country, 'EUR', locale, 'London')[0]]
 
-    t= time.time()
-    datas = get_flights_datas(D,A)
+    t = time.time()
+    datas = get_flights_datas(D, A)
 
-    print("yooooooooooo", time.time()-t)
-    print(datas)
+    print("yooooooooooo", time.time() - t)
+    #print(datas)
 
-    ids= []
+    ids = []
 
     for i in datas:
         for dict in i:
-            ids .append(dict['OutboundLegId']['Id'])
+            ids.append((dict['OutboundLegId']['Id'], dict['InboundLegId']['Id']))
 
     if len(ids) == len(set(ids)):
         print("no duplicates", len(ids), len(set(ids)))
     else:
-        print("duplicates",len(ids), len(set(ids)))
-
+        print("duplicates", len(ids), len(set(ids)))
