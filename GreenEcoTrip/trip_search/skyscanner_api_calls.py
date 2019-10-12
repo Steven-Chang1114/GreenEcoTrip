@@ -85,17 +85,27 @@ class LiveResults:
                 self.poll_results()
                 break
 
-    def filter_results(self, page_index=0):
+    def filter_results(self, start_index=0, end_index=20):
         url = "https://www.skyscanner.net/g/chiron/api/v1/flights/search/pricing/v1.0?session_id={}" \
-              "?pageIndex={}".format(self.response_key, page_index)
+              .format(self.response_key)
 
         results = requests.get(url=url, headers=self.get_headers)
         try:
             results = ResultTransformer(results.json()).transform_results()
         except json.decoder.JSONDecodeError:
             self.filter_results()
+        results_by_stops = sorted(results, key=lambda r: len(r['OutboundLegId']['Stops']))
 
-        return sorted(results, key=lambda r: r['PricingOptions'][0]['Price'])
+        for i, r in enumerate(results_by_stops):
+            if len(r['OutboundLegId']['Stops']) > 0:
+                index = i
+                break
+
+        direct_flights = sorted(results_by_stops[:index], key=lambda r: r['PricingOptions'][0]['Price'])
+        non_direct_flights = sorted(results_by_stops[index:], key=lambda r: r['PricingOptions'][0]['Price'])
+
+        results = direct_flights + non_direct_flights
+        return results[start_index:end_index]
 
 
 if __name__ == '__main__':
@@ -121,7 +131,6 @@ if __name__ == '__main__':
     obj = LiveResults(params)
     obj.poll_results()
     results = obj.filter_results()
-    results += obj.filter_results(1)
 
     print(place_autosuggest(country, currency, locale, 'BCN'))
 

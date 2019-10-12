@@ -2,9 +2,9 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from json import loads
-from .skyscanner_api_calls import LiveResults
+from .skyscanner_api_calls import LiveResults, place_autosuggest
 from .google_api_calls import GMapsWrapper
-from .utilities import calculate_flight_emission
+from .utilities import calculate_flight_emission, TrainResultTransformer
 
 
 # Create your views here.
@@ -16,6 +16,7 @@ def result_view(request):
         data = loads(body_unicode)
         return JsonResponse(get_routes(data))
 
+
 def get_routes(params):
     train_obj = GMapsWrapper('AIzaSyCUPvUnI4COqOfF73iRo32tRd8wQp_M4f8')
     train_origin = transform_place_flight_to_train(params, 'originPlace')
@@ -26,15 +27,40 @@ def get_routes(params):
 
     flight_obj = LiveResults(params)
     flight_obj.poll_results()
-    flight_results = flight_obj.filter_results()  # + flight_obj.filter_results(1)
+    flight_results = flight_obj.filter_results()
 
-    results = train_results + flight_results
-    average_emissions = np.mean([x['Emissions'] for x in results])
-    average_duration = np.mean([x['Duration'] for x in results])
+    results = {
+        'Trains': sorted(train_results, key=lambda x: x['Emissions']),
+        'Planes': sorted(flight_results, key=lambda x: x['Emissions'])
+    }
 
-    return sorted(results, key=lambda x: x['Emissions'])
+    return results
+
 
 def transform_place_flight_to_train(params, station):
     clean_place_id = params[station].split('-')[0]
     place = place_autosuggest(params['country'], params['currency'], params['locale'], clean_place_id)
     return place[0]['PlaceName']
+
+
+if __name__ == '__main__':
+    country = 'UK'
+    currency = 'EUR'
+    locale = 'en-UK'
+
+    origin = 'CDG-sky'
+    destination = 'EDI-sky'
+    departure_date = '2019-12-03'
+    return_date = '2019-12-10'
+
+    params = {
+        'country': country,
+        'currency': currency,
+        'locale': locale,
+        'originPlace': origin,
+        'destinationPlace': destination,
+        'outboundDate': departure_date,
+        'adults': 1
+    }
+    results = get_routes(params)
+    print('einef')

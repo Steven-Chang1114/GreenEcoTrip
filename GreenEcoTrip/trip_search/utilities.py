@@ -1,6 +1,7 @@
 import datetime
 import numpy as np
 
+
 class ResultTransformer():
     def __init__(self, results):
         self.query = results['Query']
@@ -138,7 +139,7 @@ class TrainResultTransformer():
         for r in self.results:
             clean_r = {'Details': self.transform_details(r),
                        'Distance': sum([d['distance']['value'] for d in r]) / 1000,
-                       'Duration': np.round(sum([d['duration']['value'] for d in r])/60),
+                       'Duration': np.round(sum([d['duration']['value'] for d in r]) / 60),
                        'Emissions': sum([d['emissions'] for d in r]),
                        'Type': 'Transit'
                        }
@@ -159,6 +160,7 @@ def calculate_date_from_seconds(date_in_seconds):
     base_date = datetime.date(year=1970, month=1, day=1)
     date = base_date + datetime.timedelta(seconds=date_in_seconds)
     return date.isoformat()
+
 
 def calculate_flight_emission(leg):
     duration = 0

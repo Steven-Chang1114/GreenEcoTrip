@@ -24,9 +24,9 @@ class GMapsWrapper:
         '''
         nearby_airports gets the airports nearby the given city within a radius R
         '''
+        place = self.client.geocode(location)[0]['geometry']['location']
         airports = self.client.places_nearby(
-            '',
-            location=location,
+            location=place,
             radius=radius,
             type='airport'
         )
@@ -112,5 +112,5 @@ if __name__ == '__main__':
 
     a = GMapsWrapper('AIzaSyCUPvUnI4COqOfF73iRo32tRd8wQp_M4f8')
     s = a.transit_routes_between('Princes Street', 'London')[0]
-    a.nearby_airports('Edinburgh Airport', radius=50000)
+    nearby = a.nearby_airports('Edinburgh Airport', radius=100000)
     print("MY ASS IN YOUR FACE")
