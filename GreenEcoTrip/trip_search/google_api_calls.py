@@ -24,7 +24,7 @@ class GMapsWrapper:
         '''
         nearby_airports gets the airports nearby the given city within a radius R
         '''
-        airports = self.client.places(
+        airports = self.client.places_nearby(
             '',
             location=location,
             radius=radius,

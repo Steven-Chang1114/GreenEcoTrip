@@ -1,30 +1,30 @@
 <template>
 <div style="padding-left: 100px; padding-right: 100px">
   <div id="base">
-  <el-row class="demo-autocomplete" :gutter="7">
-    <el-col :span="9" style = "margin-left: 22px;">
-      <p style = "margin-bottom: 1px; margin-top:5px;"><b> From</b><i class="el-icon-map-location"></i></p>
+  <el-row class="demo-autocomplete" :gutter="50">
+    <el-col :span="10">
+      <p style = "font-size: 1.5em; margin-bottom: 5px; margin-top:5px;"><b> From</b><i class="el-icon-map-location"></i></p>
       <el-autocomplete
+        size="large"
         class="inline-input"
         v-model="departLoc"
         :fetch-suggestions="querySearch"
         placeholder="City"
-        :trigger-on-focus="false"
       ></el-autocomplete>
     </el-col>
 
-    <el-col :span="9" >
-      <p style = "margin-bottom: 1px; margin-top:5px;"><b>To</b><i class="el-icon-place"></i></p>
+    <el-col :span="10" >
+      <p style = "font-size: 1.5em; margin-bottom: 5px; margin-top:5px;"><b>To</b><i class="el-icon-place"></i></p>
       <el-autocomplete
+        size="large"
         class="inline-input"
         v-model="destination"
         :fetch-suggestions="querySearch"
         placeholder="City"
-        :trigger-on-focus="false"
       ></el-autocomplete>
     </el-col>
-    <el-col :span="4">
-      <Date id = "date" showTop inline/>
+    <el-col :span="3">
+      <Date id = "date" showTop />
     </el-col>
   </el-row>
   <center >
@@ -33,6 +33,7 @@
   </div>
 </div>
 </template>
+
 <script>
 import Date from './Date.vue'
 
@@ -57,7 +58,19 @@ export default {
   name: "FTD",
   data() {
     return {
-      links: [],
+      links: [
+        { "value": "Shanghai"},
+        { "value": "Beijing"},
+        { "value": "Hongkong"},
+        { "value": "London"},
+        { "value": "Edinburgh"},
+        { "value": "Manchester"},
+        { "value": "Barcelona"},
+        { "value": "Valencia"},
+        { "value": "Paris"},
+        { "value": "Glascow"},
+        { "value": "Madrid"}
+      ],
     };
   },
   methods: {
@@ -72,26 +85,10 @@ export default {
         return (link.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
       };
     },
-    loadAll() {
-      return [
-        { "value": "Shanghai"},
-        { "value": "Beijing"},
-        { "value": "Hongkong"},
-        { "value": "London"},
-        { "value": "Edinburgh"},
-        { "value": "Manchester"},
-        { "value": "Barcelona"},
-        { "value": "Valencia"},
-        { "value": "Paris"},
-        { "value": "Glascow"},
-        { "value": "Madrid"}
-      ];
-    },
     travelSearch() {
       let date = this.$store.state.tripInterval
-      console.log(date)
       let dstr = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
-      fetch('http://localhost:8000/result', {method: 'POST',
+      fetch('http://localhost:8000/home/results/', {method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -110,9 +107,6 @@ export default {
 
       this.$router.push({path: '/result'})
     }
-  },
-  mounted() {
-    this.links = this.loadAll();
   },
   computed: {
     departLoc: {
@@ -140,7 +134,6 @@ export default {
   color:aliceblue;
   padding-top: 5px;
   margin-left: 10px;
-  margin-top: 50px;
 }
 
 .inline-input {
@@ -149,15 +142,11 @@ export default {
 
 #base{
   background-color: rgba(0,0,0,0.4);
-  object-fit: cover;
   border-radius: 10px;
-  height: 200px;
-  width:1100px;
-  margin-top: 60px;
+  padding: 2rem;
 }
 #submit{
-margin-top: 25px;
+  margin-top: 2rem;
 }
-
 
 </style>
