@@ -1,6 +1,7 @@
 <template>
 <div>
   <div class="block">  
+    {{this.$store.state.departureLocation}}
     <el-date-picker  
       v-model="date"
       type="daterange"
