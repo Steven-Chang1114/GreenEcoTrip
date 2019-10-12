@@ -13,7 +13,7 @@
 <script>
 import image from '../../assets/rainforest.jpg'
 import image2 from '../../assets/rainforest2.jpg'
-import image3 from '../../assets/rainforest3.jpg'
+import image3 from '../../assets/rainforest3.jpeg'
 
 export default {
   name: 'Banner',
