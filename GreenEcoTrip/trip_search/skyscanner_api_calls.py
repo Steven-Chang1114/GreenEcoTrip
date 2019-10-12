@@ -104,7 +104,7 @@ if __name__ == '__main__':
     }
 
     obj = LiveResults(params)
-    obj.poll_results()
+    #obj.poll_results()
     results = obj.filter_results()
     # print(place_autosuggest(country, currency, locale, 'Paris'))
     # print(flight_search_cached(country, currency, locale, origin, destination, departure_date, return_date))
