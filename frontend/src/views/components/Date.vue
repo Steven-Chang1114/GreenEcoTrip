@@ -1,12 +1,14 @@
 <template>
 <div>
-  <p v-if="showTop" style = "margin-bottom: 2px; margin-top:4px;">
-    <b>Departure</b><i class="el-icon-date"></i>
+  <p v-if="showTop" style = "margin-bottom: 5px; margin-top:5px; font-size: 1.5em;">
+    <b>Departure</b>
+    <i class="el-icon-date"></i>
   </p>
   <el-date-picker
     :style="inline ? 'display: inherit;':''"
     v-model="tripInterval"
     type="date"
+    size="large"
     placeholder="Departure time">
   </el-date-picker>
   </div>
@@ -39,7 +41,4 @@
 </script>
 
 <style>
-#return{
-    margin-left: 122px;
-}
 </style>
