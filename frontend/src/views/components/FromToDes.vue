@@ -10,7 +10,6 @@
         :fetch-suggestions="querySearch"
         placeholder="City"
         :trigger-on-focus="false"
-        @select="handleSelect"
       ></el-autocomplete>
     </el-col>
 
@@ -22,7 +21,6 @@
         :fetch-suggestions="querySearch"
         placeholder="City"
         :trigger-on-focus="false"
-        @select="handleSelect"
       ></el-autocomplete>
     </el-col>
     <el-col :span="4">
@@ -30,13 +28,27 @@
     </el-col>
   </el-row>
   <center >
-  <router-link to="/result"><el-button v-on:click="makeOrder" type="success" id = "submit" plain><h3>Let's start the trip!<i class="el-icon-magic-stick"></i></h3></el-button></router-link>
+  <el-button v-on:click="travelSearch" type="success" id = "submit" plain><h3>Let's start the trip!<i class="el-icon-magic-stick"></i></h3></el-button>
   </center>
   </div>
 </div>
 </template>
 <script>
 import Date from './Date.vue'
+
+const lookup = {
+  Shanghai: "",
+  Beijing: "",
+  Hongkong: "",
+  London: "",
+  Edinburgh: "EDI-sky",
+  Manchester: "MAN-sky",
+  Barcelona: "BCN-sky",
+  Valencia: "",
+  Paris: "CDG-sky",
+  Glascow: "",
+  Madrid: "MAD-sky",
+}
 
 export default {
   components:{
@@ -73,8 +85,31 @@ export default {
         { "value": "Paris"},
         { "value": "Glascow"},
         { "value": "Madrid"}
-        ];
+      ];
     },
+    travelSearch() {
+      let date = this.$store.state.tripInterval
+      console.log(date)
+      let dstr = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+      fetch('http://localhost:8000/result', {method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          country: 'UK',
+          currency: 'GBP',
+          locale: 'en-UK',
+          origin: lookup[this.departLoc],
+          destination: lookup[this.destination],
+          departureDate: dstr
+        })
+      })
+      .then(res => res.json())
+      .then(data => this.$state.commit('loadFlights', data))
+
+      this.$router.push({path: '/result'})
+    }
   },
   mounted() {
     this.links = this.loadAll();
