@@ -3,11 +3,20 @@ Google API calls exposes a class that wraps common use functions for the router
 '''
 from functools import reduce
 import googlemaps
+import datetime
+
+
+def calculate_time(departure_date):
+    departure_date = datetime.datetime.strptime(departure_date, '%Y-%m-%d').date()
+    base_date = datetime.date(year=1970, month=1, day=1)
+    return (departure_date - base_date).total_seconds()
+
 
 class GMapsWrapper:
     '''
     Wrapper class for gmaps functions needed by the router
     '''
+
     def __init__(self, api_key):
         self.client = googlemaps.Client(api_key)
 
@@ -23,15 +32,17 @@ class GMapsWrapper:
         )
         return airports
 
-    def transit_routes_between(self, start, terminal):
+    def transit_routes_between(self, start, terminal, departure_time=None):
         '''
         transit_routes_between gets the alternative transport options between start and terminal
         '''
         return list(map(Directions, self.client.directions(
             start,
             terminal,
-            mode='transit'
+            mode='transit',
+            alternatives=True,
         )))
+
 
 class Directions:
     '''
@@ -73,10 +84,11 @@ class Directions:
         '''
         return reduce(lambda acc, x: acc + x['distance']['value'], self.path['legs'], 0)
 
-'''
+
 if __name__ == '__main__':
     import json
+
     a = GMapsWrapper('AIzaSyCUPvUnI4COqOfF73iRo32tRd8wQp_M4f8')
     s = a.transit_routes_between('Princes Street', 'London')[0]
     print(s.calculate_carbon_footprint())
-'''
+    print(calculate_time('1971-01-01'))

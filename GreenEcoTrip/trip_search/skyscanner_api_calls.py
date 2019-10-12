@@ -2,6 +2,7 @@ import requests
 from utilities import ResultTransformer
 import json
 
+
 def flight_search_cached(country, currency, locale, origin, destination, departure_date, return_date=None):
     url = "https://www.skyscanner.net/g/chiron/api/v1/flights/browse/browseroutes/v1.0/"
     params = '{}/{}/{}/{}/{}/{}/'.format(country, currency, locale, origin, destination, departure_date)
@@ -32,6 +33,15 @@ def get_route_average_emission(origin, destination):
     if response.status_code == 200:
         emission = response.json()
         return emission
+
+
+def calculate_flight_emission(leg):
+    duration = 0
+    for seg in leg['SegmentIds'][:-1]:
+        duration += seg['Duration']
+
+    hours = duration / 60
+    return hours * 800 * 0.202
 
 
 class LiveResults:
@@ -85,7 +95,7 @@ class LiveResults:
 
     def filter_results(self, page_index=0):
         url = "https://www.skyscanner.net/g/chiron/api/v1/flights/search/pricing/v1.0?session_id={}" \
-            "?pageIndex={}".format(self.response_key, page_index)
+              "?pageIndex={}".format(self.response_key, page_index)
 
         results = requests.get(url=url, headers=self.get_headers)
         try:
