@@ -2,18 +2,13 @@
 <div>
   <p v-if="showTop">
     <b>Departure</b><i class="el-icon-date"></i>
-    <span id="return"><b>Return</b><i class="el-icon-place"></i></span>
   </p>
-  <div class="block">
-    <el-date-picker
-      v-model="date"
-      type="daterange"
-      range-separator="To"
-      start-placeholder="Start date"
-      end-placeholder="End date">
-    </el-date-picker>
-  </div>
-  
+  <el-date-picker
+    :style="inline ? 'display: inherit;':''"
+    v-model="tripInterval"
+    type="date"
+    placeholder="Departure time">
+  </el-date-picker>
   </div>
 </template>
 
@@ -24,10 +19,14 @@
       showTop: {
         type: Boolean,
         default: false
+      },
+      inline: {
+        type: Boolean,
+        default: false
       }
     },
     computed: {
-      date: {
+      tripInterval: {
         get () {
           return this.$store.state.tripInterval
         },

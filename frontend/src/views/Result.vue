@@ -24,14 +24,20 @@
       </el-row>
     </el-header>
     <el-main>
-    <el-card class="box-card" width="100%">
+    <el-card class="box-card" width="100%" v-for="trip in trips" :key="trip.id">
       <div slot="header" class="clearfix">
-        <span>Trip</span>
+        <span>Carbon emission: {{trip.carbon}} kL</span><span style = "margin-left:70px;">Price: {{trip.price}} $</span>
         <el-button style="float: right; padding: 3px 0" type="text">Book</el-button>
       </div>
-      <el-steps :space="200" :active="1" v-for="trip in trips" :key="trip.id" simple>
-        <el-step v-for="step in trip.steps" :key="step.id" title="Step 1" icon="el-icon-s-promotion">{{step.start}}</el-step>
-
+      <el-steps :space="200" :active="1" simple >
+        <fragment v-for="(step, index) in trip.steps" :key="step.id">
+          <el-step v-if="index==0" :title="step.start">
+            <font-awesome-icon :icon="getIcon(step.type)" slot="icon"/>
+          </el-step>
+          <el-step :title="step.end" simple>
+            <font-awesome-icon :icon="getIcon(step.type)" slot="icon"/>
+          </el-step>
+        </fragment>
       </el-steps>
     </el-card>
     
@@ -51,14 +57,48 @@ import F from './components/F'
       Date,
       F
     },
+    methods: {
+      getIcon(type) {
+        switch (type) {
+          case 'flight':
+            return 'plane'
+          case 'bus':
+            return 'bus'
+          case 'rail':
+            return 'subway'
+          default:
+            break;
+        }
+      }
+    },
     data() {
       return {
         trips: [
         {
           id: 0,
+          carbon: 69,
+          price: 420,
           steps: [
           {id: 0, start: "Barcelona", end: "London", type: "flight"},
           {id: 1, start: "London", end: "Edinburgh", type: "rail"}
+        ]},
+        {
+          id: 1,
+          carbon: 9,
+          price: 4567890,
+          steps: [
+          {id: 0, start: "Barcelona", end: "Valencia", type: "flight"},
+          {id: 1, start: "Valencia", end: "London", type: "rail"}
+        ]},
+        {
+          id: 1,
+          carbon: 4353,
+          price: 1,
+          steps: [
+          {id: 0, start: "Madrid", end: "Valencia", type: "bus"},
+          {id: 1, start: "Valencia", end: "Barcelona", type: "flight"},
+          {id: 2, start: "Barcelona", end: "London", type: "rail"},
+          {id: 3, start: "London", end: "KL", type: "rail"}
         ]},
         ]
       }
