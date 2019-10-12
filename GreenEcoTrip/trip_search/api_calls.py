@@ -1,5 +1,5 @@
 import requests
-
+from utilities import ResultTransformer
 
 def flight_search_cached(country, currency, locale, origin, destination, departure_date, return_date=None):
     url = "https://www.skyscanner.net/g/chiron/api/v1/flights/browse/browseroutes/v1.0/"
@@ -35,20 +35,21 @@ def get_route_average_emission(origin, destination):
 
 class LiveResults:
     def __init__(self, params=None):
-        self.url = "https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/pricing/v1.0"
+        self.url = "https://www.skyscanner.net/g/chiron/api/v1/flights/search/pricing/v1.0"
         self.params = params
         self.headers = {
             "api-key": "skyscanner-hackupc2019",
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Accept": "application/json",
+            "X-Forwarded-For": "147.83.201.96"
         }
 
     def create_session(self):
         print('Creating session')
         try:
-            response = requests.post(url=self.url, headers=self.headers, data=self.params)
-            self.response_key = response.headers['Location'].split('/')[-1]
-            self.get_headers = {**{key: value for (key, value) in self.headers.items() if key != 'Content-Type'},
-                                **{'Prefer': 'wait=120'}}
+            response = requests.post(url=self.url, headers=self.headers, json=self.params)
+            self.response_key = response.json()['session_id']
+            self.get_headers = {'api-key': 'skyscanner-hackupc2019', "Accept": "application/json"}
         except KeyError:
             self.create_session()
 
@@ -60,24 +61,34 @@ class LiveResults:
         print(response.status_code)
         while True:
             if response.status_code == 201:
-                url = "https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/pricing/uk2/v1.0/{}" \
-                      "?pageIndex=0".format(self.response_key)
-                results = requests.get(url=url, headers=self.get_headers).json()
-                print(results['Status'])
-                if results['Status'] == 'UpdatesComplete':
-                    break
+                url = "https://www.skyscanner.net/g/chiron/api/v1/flights/search/pricing/v1.0?session_id={}" \
+                    .format(self.response_key)
+
+                results = requests.get(url=url, headers=self.get_headers)
+                print(results.json()['Status'])
+                if results.json()['Status'] == 'UpdatesComplete':
+                    return results.json()
             elif response.status_code == 429:
                 print('There have been too many requests in the past minute. Retrying...')
                 self.poll_results()
                 break
+
+    def filter_results(self, params={'sortType': 'price', 'sortOrder': 'asc'}):
+        url = "https://www.skyscanner.net/g/chiron/api/v1/flights/search/pricing/v1.0?session_id={}" \
+            .format(self.response_key)
+
+        results = requests.get(url=url, headers=self.get_headers, params=params)
+        return ResultTransformer(results.json()).transform_results()
+
+
 
 if __name__ == '__main__':
     country = 'UK'
     currency = 'EUR'
     locale = 'en-UK'
 
-    origin = 'CDG'
-    destination = 'EDI'
+    origin = 'CDG-sky'
+    destination = 'EDI-sky'
     departure_date = '2019-12-03'
     return_date = '2019-12-10'
 
@@ -89,10 +100,12 @@ if __name__ == '__main__':
         'destinationPlace': destination,
         'outboundDate': departure_date,
         'inboundDate': return_date,
-        'adults':1
+        'adults': 1
     }
+
     obj = LiveResults(params)
     obj.poll_results()
+    results = obj.filter_results()
     # print(place_autosuggest(country, currency, locale, 'Paris'))
     # print(flight_search_cached(country, currency, locale, origin, destination, departure_date, return_date))
     print(get_route_average_emission(origin, destination))
