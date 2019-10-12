@@ -1,7 +1,7 @@
 <template>
 <div>
   <template>
-  <el-carousel height="100px" direction="vertical" :autoplay="false">
+  <el-carousel height="120px" direction="vertical" :autoplay="false">
     <el-carousel-item v-for="item in items" :key="item">
       <img :src="item" />
     </el-carousel-item>
