@@ -1,6 +1,6 @@
 <template>
 <div>
-    <p><b>Departure</b><i class="el-icon-date"></i><span id="arrive"><b>Arrive</b><i class="el-icon-place"></i></span></p>
+    <p><b>Departure</b><i class="el-icon-date"></i><span id="return"><b>Return</b><i class="el-icon-place"></i></span></p>
   <div class="block">  
     <el-date-picker  
       v-model="date"
@@ -29,7 +29,7 @@
 </script>
 
 <style>
-#arrive{
+#return{
     margin-left: 122px;
 }
 </style>

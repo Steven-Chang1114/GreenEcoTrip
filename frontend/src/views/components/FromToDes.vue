@@ -6,7 +6,7 @@
     <p><b> From</b><i class="el-icon-map-location"></i></p>
     <el-autocomplete
       class="inline-input"
-      v-model="state1"
+      v-model="departLoc"
       :fetch-suggestions="querySearch"
       placeholder="City"
       :trigger-on-focus="false"
@@ -18,7 +18,7 @@
     <p><b>To</b><i class="el-icon-place"></i></p>
     <el-autocomplete
       class="inline-input"
-      v-model="state2"
+      v-model="destination"
       :fetch-suggestions="querySearch"
       placeholder="City"
       :trigger-on-focus="false"
@@ -35,56 +35,71 @@
 </template>
 <script>
 import Date from './Date.vue'
+import { mapState } from 'vuex'
+
 export default {
-    components:{
-      Date,
+  components:{
+    Date
+  },
+  name: "FTD",
+  data() {
+    return {
+      links: [],
+    };
+  },
+  methods: {
+    querySearch(queryString, cb) {
+      var links = this.links;
+      var results = queryString ? links.filter(this.createFilter(queryString)) : links;
+      // call callback function to return suggestions
+      cb(results);
     },
-    name: "FTD",
-    data() {
-      return {
-        links: [],
-        state1: '',
-        state2: '',
+    createFilter(queryString) {
+      return (link) => {
+        return (link.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
       };
     },
-    methods: {
-      makeOrder(){
-        date1 = value1;
+    loadAll() {
+      return [
+        { "value": "Shanghai"},
+        { "value": "Beijing"},
+        { "value": "Hongkong"},
+        { "value": "London"},
+        { "value": "Edinburgh"},
+        { "value": "Manchester"},
+        { "value": "Barcelona"},
+        { "value": "Valencia"},
+        { "value": "Paris"},
+        { "value": "Glascow"},
+        { "value": "Madrid"}
+        ];
+    },
+    handleSelect(item) {
+      console.log(item);
+    }
+  },
+  mounted() {
+    this.links = this.loadAll();
+  },
+  computed: {
+    departLoc: {
+      get () {
+        return this.$store.state.departureLocation
       },
-      querySearch(queryString, cb) {
-        var links = this.links;
-        var results = queryString ? links.filter(this.createFilter(queryString)) : links;
-        // call callback function to return suggestions
-        cb(results);
-      },
-      createFilter(queryString) {
-        return (link) => {
-          return (link.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-        };
-      },
-      loadAll() {
-        return [
-          { "value": "Shanghai"},
-          { "value": "Beijing"},
-          { "value": "Hongkong"},
-          { "value": "London"},
-          { "value": "Edinburgh"},
-          { "value": "Manchester"},
-          { "value": "Barcelona"},
-          { "value": "Valencia"},
-          { "value": "Paris"},
-          { "value": "Glascow"},
-          { "value": "Madrid"}
-         ];
-      },
-      handleSelect(item) {
-        console.log(item);
+      set (val) {
+        this.$store.commit('updateDeparture', val)
       }
     },
-    mounted() {
-      this.links = this.loadAll();
+    destination: {
+      get () {
+        return this.$store.state.destination
+      },
+      set (val) {
+        this.$store.commit('updateDestination', val)
+      }
     }
   }
+}
 </script>
 
 <style>

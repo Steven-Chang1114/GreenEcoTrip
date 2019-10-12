@@ -1,6 +1,7 @@
 <template>
 <div>
-  <div class="block">  
+  {{this.$store.state.destination}}
+  <div class="block">
     <el-date-picker  
       v-model="date"
       type="daterange"
@@ -14,12 +15,7 @@
 </template>
 
 <script>
-import Date from './components/Date.vue'
-
   export default {
-    components: {
-      date: Date.date,
-    },
     name: "Result",
     data() {
       return {
