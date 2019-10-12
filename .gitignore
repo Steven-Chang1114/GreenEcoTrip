@@ -183,8 +183,6 @@ ENV/
 env.bak/
 venv.bak/
 pip-selfcheck.json
-*.idea/
-share/
 
 # User-specific stuff
 GreenEcoTrip/.idea/**/workspace.xml
@@ -204,6 +202,9 @@ GreenEcoTrip/.idea/**/sqlDataSources.xml
 GreenEcoTrip/.idea/**/dynamic.xml
 GreenEcoTrip/.idea/**/uiDesigner.xml
 GreenEcoTrip/.idea/**/dbnavigator.xml
+GreenEcoTrip/.idea/misc.xml
+GreenEcoTrip/.idea/modules.xml
+GreenEcoTrip/.idea/vcs.xml
 
 # Gradle
 GreenEcoTrip/.idea/**/gradle.xml
@@ -213,11 +214,12 @@ GreenEcoTrip/.idea/**/libraries
 # When using Gradle or Maven with auto-import, you should exclude module files,
 # since they will be recreated, and may cause churn.  Uncomment if using
 # auto-import.
-# .idea/modules.xml
-# .idea/*.iml
-# .idea/modules
-# *.iml
-# *.ipr
+GreenEcoTrip/.idea/modules.xml
+GreenEcoTrip/.idea/GreenEcoTrip.iml
+GreenEcoTrip/.idea/*.iml
+GreenEcoTrip/.idea/modules
+*.iml
+*.ipr
 
 # CMake
 cmake-build-*/
