@@ -20,6 +20,7 @@
 <script>
   export default {
     name: "Date",
+<<<<<<< Updated upstream
     props: {
       showTop: {
         type: Boolean,
@@ -36,6 +37,18 @@
         }
       }
     },
+=======
+    computed: {
+    date: {
+      get () {
+        return this.$store.state.tripInterval
+      },
+      set (val) {
+        this.$store.commit('updateTripInterval', val)
+      }
+    }
+    }
+>>>>>>> Stashed changes
   };
 </script>
 
