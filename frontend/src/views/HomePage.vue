@@ -7,14 +7,12 @@
 
 <script>
 import FTD from './components/FromToDes.vue'
-import Date from './components/Date.vue'
 import Welcome from './components/Welcome.vue'
 
 export default {
   name: 'HomePage',
   components: {
     FTD,
-    Date,
     Welcome
   },
   props: {
