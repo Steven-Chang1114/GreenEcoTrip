@@ -37,14 +37,35 @@ class Directions:
     '''
     Contains methods for parsing GMaps directions response
     '''
+
+    footprint_table = {
+        "METRO_RAIL": 500,
+        "HEAVY_RAIL": 500,
+        "COMMUTER_TRAIN": 500,
+        "HIGH_SPEED_TRAIN": 500,
+        "LONG_DISTANCE_TRAIN": 500,
+        "BUS": 500,
+    }
+
     def __init__(self, directions):
         self.directions = directions
 
-    def calculate_carbon_footprint(self):
+    def calculate_carbon_footprint(self, path_idx=0):
         '''
         Sums the carbon footprint of transit steps
         '''
-        return self.directions
+        co_two = 0
+        path = self.directions[path_idx]
+        for leg in path['legs']:
+            for step in leg['steps']:
+                transit_details = step.get('transit_details', {})
+                line = transit_details.get('line', {})
+                vehicle = line.get('vehicle')
+                if vehicle is None:
+                    break
+                co_two += self.footprint_table.get(vehicle['type'], 0) * step['distance']['value']
+
+        return co_two
 
     def distance(self):
         '''
