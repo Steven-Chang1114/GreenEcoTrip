@@ -22,6 +22,7 @@
         </el-col>
       </el-row>
     </el-header>
+
     <el-main v-loading="!trips.length">
       <el-card class="box-card" width="100%" v-for="trip in trips" :key="trip.id">
         <div slot="header" class="clearfix">
@@ -40,6 +41,7 @@
         </el-steps>
       </el-card>
     </el-main>
+    <Banner />
   </el-container>
 </el-container>
 </template>
@@ -47,13 +49,15 @@
 <script>
 import Date from './components/Date'
 import F from './components/F'
+import Banner from './components/Banner'
 import { mapState } from 'vuex'
 
   export default {
     name: "Result",
     components: {
       Date,
-      F
+      F,
+      Banner
     },
     methods: {
       getIcon(type) {
