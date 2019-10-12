@@ -1,6 +1,6 @@
 <template>
 <el-container id="welcome">
-  <h1>AY MATE</h1>
+  <h1>Travel4Future</h1>
   <h3>FUCK POLUTION YO</h3>
   <p>SO YOU BETTER WATCH OUT</p>
 </el-container>

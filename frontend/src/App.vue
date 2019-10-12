@@ -8,7 +8,7 @@
     active-text-color="#ffd04b">
       <el-menu-item index="1" ><router-link to="/"><i class="el-icon-s-promotion"></i></router-link></el-menu-item>
       <el-menu-item index="2" disabled><i class="el-icon-info"></i></el-menu-item>
-      <el-submenu index="2">
+      <el-submenu index="3">
         <template slot="title">
           <i class="el-icon-s-comment"></i>
         </template>
@@ -19,7 +19,7 @@
         <el-menu-item index="2-5">한국어</el-menu-item>
         <el-menu-item index="2-5">English</el-menu-item>
       </el-submenu>
-      <el-submenu index="3">
+      <el-submenu index="4">
         <template slot="title"><i class="el-icon-coin"></i></template>
         <el-menu-item index="3-1">CNY</el-menu-item>
         <el-menu-item index="3-2">USD</el-menu-item>
@@ -28,6 +28,9 @@
         <el-menu-item index="3-5">HKD</el-menu-item>
         <el-menu-item index="3-6">EUR</el-menu-item>
       </el-submenu>
+      <el-menu-item style="position: absolute; right: 45vw">
+        <span style="font-size: 2em;">Travel4Future</span>
+      </el-menu-item>
     </el-menu>
     <router-view/>
   </div>
