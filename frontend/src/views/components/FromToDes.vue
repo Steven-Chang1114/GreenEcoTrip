@@ -1,4 +1,5 @@
 <template>
+<div>
 <div id = "base">
  <el-row class="demo-autocomplete" :gutter="5">
   <el-col :span="7" :offset="1">
@@ -30,6 +31,7 @@
   </el-col>
 </el-row>
 <el-button type="success" id = "submit" plain><h3>Let's start the trip!<i class="el-icon-magic-stick"></i></h3></el-button>
+</div>
 </div>
 </template>
 <script>
@@ -96,9 +98,8 @@ export default {
 }
 
 #base{
-  background-color: black;
+  background-color: rgba(0,0,0,0.4);
   object-fit: cover;
-  opacity: 0.4;
   border-radius: 10px;
   height: 230px;
   width: 1200px;
@@ -106,8 +107,8 @@ export default {
   margin-top: 65px;
 }
 #submit{
-  margin-left: 490px;
-  margin-top: 25px;
+margin-left: 500px;
+margin-top: 25px;
 
 }
 
