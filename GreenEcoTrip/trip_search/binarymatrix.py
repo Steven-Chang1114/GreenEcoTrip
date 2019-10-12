@@ -1,33 +1,23 @@
 import numpy as np
-
+from itertools import product
+import time
 
 def get_number_of_places(datas):
     return len(set(([i['Inbounds']['Name'] for i in datas]) + ([i['Inbounds']['Name2'] for i in datas])))
 
+
 def get_list_of_places(datas):
     return set(([i['Inbounds']['Name'] for i in datas]) + ([i['Inbounds']['Name2'] for i in datas]))
 
+
 def get_travel_tuples(datas):
-
-    return zip(([i['Inbounds']['Name'] for i in datas]),([i['Inbounds']['Name2'] for i in datas]))
-
+    return zip(([i['Inbounds']['Name'] for i in datas]), ([i['Inbounds']['Name2'] for i in datas]))
 
 
-
-def createbinarymatrix(names, couples):
-    n = len(names)
-    matrix = np.zeros((n,n))
-    matrix = np.asmatrix(matrix)
-
-    for i in matrix:
-        for j in matrix:
-            if (i,j) == couples[i]:
-                matrix[i,j] = 1
-
+def create_adjacency_matrix(places, edges):
+    matrix = product(places, places)
+    matrix = [(i, j, 1) if ((i, j) in edges or (j, i) in edges) else (i, j, 0) for (i, j) in matrix]
     return matrix
-
-
-
 
 
 def maronna(Partenza, Arrivo, Durata):
@@ -51,8 +41,15 @@ if __name__ == '__main__':
 
     print("LIST RESULT", veridati)
     print('len', get_number_of_places(veridati))
-    names= get_list_of_places(veridati)
-    print( 'nomi',  names)
-    couples= list(get_travel_tuples(veridati))
-    print('corse',couples)
-    print('matrix', createbinarymatrix(names,couples))
+    names = get_list_of_places(veridati)
+    print('nomi', names)
+    couples = list(get_travel_tuples(veridati))
+    print('corse', couples, '\n')
+
+    t = time.time()
+    matrix = create_adjacency_matrix(names, couples)
+    print(time.time() - t)
+    print(np.linspace(0, 36, 7)[:-1])
+
+    for i in np.linspace(0, 36, 7)[:-1]:
+        print(matrix[int(i):int(i + 6)])

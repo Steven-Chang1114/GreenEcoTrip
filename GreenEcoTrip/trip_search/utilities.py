@@ -1,4 +1,5 @@
 import datetime
+import numpy as np
 
 class ResultTransformer():
     def __init__(self, results):
@@ -15,7 +16,10 @@ class ResultTransformer():
         results = []
         for itinerary in self.itineraries:
             i = 0
+            itinerary['Type'] = 'Flight'
             itinerary['OutboundLegId'] = self.transform_leg(itinerary['OutboundLegId'])
+            itinerary['Emissions'] = calculate_flight_emission(itinerary['OutboundLegId'])
+            itinerary['Duration'] = itinerary['OutboundLegId']['Duration']
             if 'InboundLegId' in itinerary:
                 itinerary['InboundLegId'] = self.transform_leg(itinerary['InboundLegId'])
 
@@ -123,3 +127,43 @@ class ResultTransformer():
             if agent['Id'] == agent_id:
                 return agent
         raise LookupError
+
+
+class TrainResultTransformer():
+    def __init__(self, results):
+        self.results = results
+
+    def transform(self):
+        clean_results = []
+        for r in self.results:
+            clean_r = {'Details': self.transform_details(r),
+                       'Distance': sum([d['distance']['value'] for d in r]) / 1000,
+                       'Duration': np.round(sum([d['duration']['value'] for d in r])/60),
+                       'Emissions': sum([d['emissions'] for d in r]),
+                       'Type': 'Transit'
+                       }
+            clean_results.append(clean_r)
+
+        return clean_results
+
+    def transform_details(self, result):
+        for r in result:
+            r['transit_detail']['arrival_time']['value'] = calculate_date_from_seconds(
+                r['transit_detail']['arrival_time']['value'])
+            r['transit_detail']['departure_time']['value'] = calculate_date_from_seconds(
+                r['transit_detail']['departure_time']['value'])
+        return result
+
+
+def calculate_date_from_seconds(date_in_seconds):
+    base_date = datetime.date(year=1970, month=1, day=1)
+    date = base_date + datetime.timedelta(seconds=date_in_seconds)
+    return date.isoformat()
+
+def calculate_flight_emission(leg):
+    duration = 0
+    for seg in leg['SegmentIds'][:-1]:
+        duration += seg['Duration']
+
+    hours = duration / 60
+    return hours * 800 * 0.202

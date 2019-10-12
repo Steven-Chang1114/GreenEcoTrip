@@ -3,11 +3,20 @@ Google API calls exposes a class that wraps common use functions for the router
 '''
 from functools import reduce
 import googlemaps
+import datetime
+
+
+def calculate_seconds_from_date(departure_date):
+    departure_date = datetime.datetime.strptime(departure_date, '%Y-%m-%d').date()
+    base_date = datetime.date(year=1970, month=1, day=1)
+    return (departure_date - base_date).total_seconds()
+
 
 class GMapsWrapper:
     '''
     Wrapper class for gmaps functions needed by the router
     '''
+
     def __init__(self, api_key):
         self.client = googlemaps.Client(api_key)
 
@@ -23,16 +32,25 @@ class GMapsWrapper:
         )
         return airports
 
-    def transit_routes_between(self, start, terminal):
+    def transit_routes_between(self, start, terminal, departure_date=datetime.date.today().isoformat()):
         '''
         transit_routes_between gets the alternative transport options between start and terminal
         '''
+        params = {
+            'mode': 'transit',
+            'alternatives': True,
+        }
+
+        departure_time = calculate_seconds_from_date(departure_date)
+
         return list(map(Directions, self.client.directions(
             start,
             terminal,
             mode='transit',
-            alternatives=True
+            alternatives=True,
+            departure_time=departure_time,
         )))
+
 
 class Directions:
     '''
@@ -84,11 +102,15 @@ class Directions:
                     yield {
                         'distance': step['distance'],
                         'duration': step['duration'],
-                        'transit_detail': step['transit_details']
+                        'transit_detail': step['transit_details'],
+                        'emissions': self.calculate_carbon_footprint()
                     }
+
 
 if __name__ == '__main__':
     import json
+
     a = GMapsWrapper('AIzaSyCUPvUnI4COqOfF73iRo32tRd8wQp_M4f8')
     s = a.transit_routes_between('Princes Street', 'London')[0]
-    print(json.dumps(list(s.filter_transit_steps())))
+    a.nearby_airports('Edinburgh Airport', radius=50000)
+    print("MY ASS IN YOUR FACE")
