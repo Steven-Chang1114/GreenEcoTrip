@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     departureLocation: '',
     destination: '',
-    tripInterval: Date.now()
+    tripInterval: new Date(),
+    trips: []
   },
   mutations: {
     updateDeparture(state, departureLocation) {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     updateTripInterval(state, tripInterval) {
       state.tripInterval = tripInterval
     },
+    updateTrips(state, trips) {
+      state.trips = trips
+    }
   },
   actions: {
 

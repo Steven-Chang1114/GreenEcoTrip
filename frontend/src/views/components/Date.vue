@@ -31,7 +31,7 @@
           return this.$store.state.tripInterval
         },
         set (val) {
-          this.$store.commit('updateTripInterval', val)
+          this.$store.commit('updateTripInterval', new Date(val))
         }
       }
     },
