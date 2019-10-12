@@ -27,11 +27,11 @@ class GMapsWrapper:
         '''
         transit_routes_between gets the alternative transport options between start and terminal
         '''
-        return map(Directions, self.client.directions(
+        return list(map(Directions, self.client.directions(
             start,
             terminal,
             mode='transit'
-        ))
+        )))
 
 class Directions:
     '''
@@ -48,21 +48,20 @@ class Directions:
     }
 
     def __init__(self, directions):
-        self.directions = directions
+        self.path = directions
 
-    def calculate_carbon_footprint(self, path_idx=0):
+    def calculate_carbon_footprint(self):
         '''
         Sums the carbon footprint of transit steps
         '''
         co_two = 0
-        path = self.directions[path_idx]
-        for leg in path['legs']:
+        for leg in self.path['legs']:
             for step in leg['steps']:
                 transit_details = step.get('transit_details', {})
                 line = transit_details.get('line', {})
                 vehicle = line.get('vehicle')
                 if vehicle is None:
-                    break
+                    continue
                 co_two += self.footprint_table.get(vehicle['type'], 0) * step['distance']['value']
 
         return co_two
@@ -71,12 +70,12 @@ class Directions:
         '''
         Returns the distance of the entire route
         '''
-        return reduce(lambda acc, x: acc + x['distance']['value'], self.directions['legs'], 0)
+        return reduce(lambda acc, x: acc + x['distance']['value'], self.path['legs'], 0)
 
 '''
 if __name__ == '__main__':
     import json
     a = GMapsWrapper('AIzaSyCUPvUnI4COqOfF73iRo32tRd8wQp_M4f8')
-    s = a.transit_routes_between('Princes Street', 'London')
-    print(json.dumps(s))
+    s = a.transit_routes_between('Princes Street', 'London')[0]
+    print(s.calculate_carbon_footprint())
 '''
