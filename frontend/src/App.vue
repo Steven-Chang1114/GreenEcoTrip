@@ -28,8 +28,8 @@
         <el-menu-item index="3-5">HKD</el-menu-item>
         <el-menu-item index="3-6">EUR</el-menu-item>
       </el-submenu>
-      <el-menu-item style="position: absolute; right: 45vw">
-        <span style="font-size: 2em;">Travel4Future</span>
+      <el-menu-item style="position: absolute; right: 40vw">
+        <span style="font-size: 2em;"><font-awesome-icon icon="leaf" slot="icon"/> Travel4Future</span>
       </el-menu-item>
     </el-menu>
     <router-view/>
