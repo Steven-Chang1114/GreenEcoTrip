@@ -1,8 +1,8 @@
 <template>
 <div style="padding-left: 100px; padding-right: 100px">
   <div id="base">
-  <el-row class="demo-autocomplete" :gutter="50">
-    <el-col :span="10">
+  <el-row class="demo-autocomplete" :gutter="40">
+    <el-col :span="9">
       <p style = "font-size: 1.5em; margin-bottom: 5px; margin-top:5px;"><b> From</b><i class="el-icon-map-location"></i></p>
       <el-autocomplete
         size="large"
@@ -13,7 +13,7 @@
       ></el-autocomplete>
     </el-col>
 
-    <el-col :span="10" >
+    <el-col :span="9" >
       <p style = "font-size: 1.5em; margin-bottom: 5px; margin-top:5px;"><b>To</b><i class="el-icon-place"></i></p>
       <el-autocomplete
         size="large"
@@ -23,7 +23,7 @@
         placeholder="City"
       ></el-autocomplete>
     </el-col>
-    <el-col :span="3">
+    <el-col :span="4">
       <Date id = "date" showTop />
     </el-col>
   </el-row>

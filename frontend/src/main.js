@@ -6,13 +6,15 @@ import router from './router';
 import store from './store';
 import Fragment from 'vue-fragment'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUserSecret, faPlane, faBus, faSubway } from '@fortawesome/free-solid-svg-icons'
+import { faUserSecret, faPlane, faBus, faSubway, faLeaf } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
  
 library.add(faUserSecret)
 library.add(faPlane)
 library.add(faBus)
 library.add(faSubway)
+library.add(faLeaf)
+
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
