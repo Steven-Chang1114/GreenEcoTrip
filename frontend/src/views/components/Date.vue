@@ -1,6 +1,6 @@
 <template>
 <div>
-  <p v-if="showTop">
+  <p v-if="showTop" style = "margin-bottom: 2px; margin-top:4px;">
     <b>Departure</b><i class="el-icon-date"></i>
   </p>
   <el-date-picker

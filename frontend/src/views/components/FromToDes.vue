@@ -1,9 +1,9 @@
 <template>
-<div>
+<div style="padding-left: 100px; padding-right: 100px">
   <div id="base">
   <el-row class="demo-autocomplete" :gutter="7">
-    <el-col :span="7" :offset="2">
-      <p><b> From</b><i class="el-icon-map-location"></i></p>
+    <el-col :span="9" style = "margin-left: 22px;">
+      <p style = "margin-bottom: 1px; margin-top:5px;"><b> From</b><i class="el-icon-map-location"></i></p>
       <el-autocomplete
         class="inline-input"
         v-model="departLoc"
@@ -14,8 +14,8 @@
       ></el-autocomplete>
     </el-col>
 
-    <el-col :span="7" >
-      <p><b>To</b><i class="el-icon-place"></i></p>
+    <el-col :span="9" >
+      <p style = "margin-bottom: 1px; margin-top:5px;"><b>To</b><i class="el-icon-place"></i></p>
       <el-autocomplete
         class="inline-input"
         v-model="destination"
@@ -25,11 +25,11 @@
         @select="handleSelect"
       ></el-autocomplete>
     </el-col>
-    <el-col :span="7">
+    <el-col :span="4">
       <Date id = "date" showTop inline/>
     </el-col>
   </el-row>
-  <center>
+  <center >
   <router-link to="/result"><el-button v-on:click="makeOrder" type="success" id = "submit" plain><h3>Let's start the trip!<i class="el-icon-magic-stick"></i></h3></el-button></router-link>
   </center>
   </div>
@@ -104,7 +104,8 @@ export default {
 .demo-autocomplete{
   color:aliceblue;
   padding-top: 5px;
-  margin-left: 100px;
+  margin-left: 10px;
+  margin-top: 50px;
 }
 
 .inline-input {
@@ -115,8 +116,9 @@ export default {
   background-color: rgba(0,0,0,0.4);
   object-fit: cover;
   border-radius: 10px;
-  height: 230px;
-
+  height: 200px;
+  width:1100px;
+  margin-top: 60px;
 }
 #submit{
 margin-top: 25px;
