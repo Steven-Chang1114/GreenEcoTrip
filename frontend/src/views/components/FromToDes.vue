@@ -1,7 +1,8 @@
 <template>
- <el-row class="demo-autocomplete">
-  <el-col :span="4" class = "auto" >
-    <p><b>From</b><i class="el-icon-map-location"></i></p>
+<div id = "base">
+ <el-row class="demo-autocomplete" :gutter="5">
+  <el-col :span="7" :offset="1">
+    <p><b> From</b><i class="el-icon-map-location"></i></p>
     <el-autocomplete
       class="inline-input"
       v-model="state1"
@@ -12,7 +13,7 @@
     ></el-autocomplete>
   </el-col>
 
-  <el-col :span="4" class = "aut">
+  <el-col :span="7" >
     <p><b>To</b><i class="el-icon-place"></i></p>
     <el-autocomplete
       id = "a"
@@ -24,10 +25,12 @@
       @select="handleSelect"
     ></el-autocomplete>
   </el-col>
-  <el-col :span="600" class = "aut">
+  <el-col :span="6">
     <Date id = "date"/>
   </el-col>
 </el-row>
+<el-button type="success" id = "submit" plain><h3>Let's start the trip!<i class="el-icon-magic-stick"></i></h3></el-button>
+</div>
 </template>
 <script>
 import Date from './Date.vue'
@@ -83,11 +86,29 @@ export default {
 
 <style>
 .demo-autocomplete{
-  margin-top: 50px;
-  margin-left: 300px;
+  color:aliceblue;
+  padding-top: 5px;
+  margin-left: 100px;
 }
-#date{
-  margin-top: 15px;
+
+.inline-input {
+  display: inline;
+}
+
+#base{
+  background-color: black;
+  object-fit: cover;
+  opacity: 0.4;
+  border-radius: 10px;
+  height: 230px;
+  width: 1200px;
+  margin-left: 130px;
+  margin-top: 65px;
+}
+#submit{
+  margin-left: 490px;
+  margin-top: 25px;
+
 }
 
 

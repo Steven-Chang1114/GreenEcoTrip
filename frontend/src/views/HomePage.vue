@@ -1,21 +1,21 @@
 <template>
-<div >
+<div id = "background">
+<Welcome />
 <FTD />
-<Image />
 </div>
 </template>
 
 <script>
 import FTD from './components/FromToDes.vue'
 import Date from './components/Date.vue'
-import Image from './components/Image.vue'
+import Welcome from './components/Welcome.vue'
 
 export default {
   name: 'HomePage',
   components: {
     FTD,
     Date,
-    Image
+    Welcome
   },
   props: {
     msg: String
@@ -24,13 +24,12 @@ export default {
 </script>
 
 
-<style scoped>
-
-#search {
-
-  margin-top: 60px;
-}
-.from {
-  padding-left: 100em;
+<style>
+#background{
+  background-image: url("../assets/vacation.jpg");
+  padding-bottom: 800px;
+  max-width: 200%;
+  object-fit: cover;
+  height: 3px;
 }
 </style>

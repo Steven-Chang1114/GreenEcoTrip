@@ -54,6 +54,6 @@
 
 <style>
 #arrive{
-    margin-left: 90px;
+    margin-left: 122px;
 }
 </style>
