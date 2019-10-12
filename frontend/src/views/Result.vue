@@ -20,12 +20,13 @@ import Date from './components/Date.vue'
     components: {
       date: Date.date,
     },
-    name: "date",
+    name: "Result",
     data() {
       return {
         pickerOptions: {
  
         },
+        date: '',
       };
     }
   };

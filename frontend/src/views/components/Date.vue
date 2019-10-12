@@ -16,7 +16,7 @@
 
 <script>
   export default {
-    name: "date",
+    name: "Date",
     data() {
       return {
         pickerOptions: {
