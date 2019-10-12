@@ -85,12 +85,11 @@ class LiveResults:
                 self.poll_results()
                 break
 
-    def filter_results(self, params={'sortType': 'price', 'sortOrder': 'asc'}):
+    def filter_results(self, page_index=0):
         url = "https://www.skyscanner.net/g/chiron/api/v1/flights/search/pricing/v1.0?session_id={}" \
-            .format(self.response_key)
+            "?pageIndex={}".format(self.response_key, page_index)
 
-        results = requests.get(url=url, headers=self.get_headers, params=params)
-
+        results = requests.get(url=url, headers=self.get_headers)
         try:
             results = ResultTransformer(results.json()).transform_results()
         except json.decoder.JSONDecodeError:
@@ -123,6 +122,7 @@ if __name__ == '__main__':
     obj = LiveResults(params)
     obj.poll_results()
     results = obj.filter_results()
+    results += obj.filter_results(1)
     # import time
     # t = time.time()
     # results = sorted(results, key=lambda r: r['PricingOptions'][0]['Price'])
