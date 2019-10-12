@@ -1,5 +1,5 @@
 import requests
-from utilities import ResultTransformer
+from .utilities import ResultTransformer
 import json
 
 
