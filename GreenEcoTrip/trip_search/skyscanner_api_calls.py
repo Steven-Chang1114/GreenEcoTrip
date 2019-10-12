@@ -27,7 +27,7 @@ def place_autosuggest(country, currency, locale, query):
 
 
 def get_route_average_emission(origin, destination):
-    url = 'https://www.skyscanner.net/g/chiron/api/v1/eco/average-emissions?routes=(%s, %s)' % (origin, destination)
+    url = 'https://www.skyscanner.net/g/chiron/api/v1/eco/average-emissions?routes=%s,%s' % (origin, destination)
     response = requests.get(url, headers={'api-key': 'skyscanner-hackupc2019'})
 
     if response.status_code == 200:
