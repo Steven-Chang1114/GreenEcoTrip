@@ -37,6 +37,17 @@
       >
     </el-slider><br>
   </div>
+
+  <el-divider></el-divider>
+  <p style = "margin-left: 15px;">Carbon Emission</p>
+  <el-progress style = "margin-left:30px; margin-right: 20px" type="dashboard" :percentage="percentage" :color="colors"></el-progress>
+<div>
+  <el-button-group style = "margin-left:40px; margin-right: 20px">
+    <el-button icon="el-icon-minus" @click="decrease"></el-button>
+    <el-button icon="el-icon-plus" @click="increase"></el-button>
+  </el-button-group><br><br>
+</div>
+
   </div>
 </template>
 
@@ -44,6 +55,14 @@
   export default {
     data() {
       return {
+        percentage: 10,
+        colors: [
+          {color: '#f56c6c', percentage: 20},
+          {color: '#e6a23c', percentage: 40},
+          {color: '#5cb87a', percentage: 60},
+          {color: '#1989fa', percentage: 80},
+          {color: '#6f7ad3', percentage: 100}
+        ],
         price: [400, 1000],
         mark: {
           0:'0$',
@@ -79,6 +98,20 @@
           label: 'Cheapest'
         }],
         value: ''
+      };
+    },
+    methods: {
+      increase() {
+        this.percentage += 10;
+        if (this.percentage > 100) {
+          this.percentage = 100;
+        }
+      },
+      decrease() {
+        this.percentage -= 10;
+        if (this.percentage < 0) {
+          this.percentage = 0;
+        }
       }
     }
   }
