@@ -1,6 +1,7 @@
 import requests
 from utilities import ResultTransformer
 
+
 def flight_search_cached(country, currency, locale, origin, destination, departure_date, return_date=None):
     url = "https://www.skyscanner.net/g/chiron/api/v1/flights/browse/browseroutes/v1.0/"
     params = '{}/{}/{}/{}/{}/{}/'.format(country, currency, locale, origin, destination, departure_date)
@@ -10,6 +11,7 @@ def flight_search_cached(country, currency, locale, origin, destination, departu
 
     if routes.status_code == 200:
         content = routes.json()
+
 
     return content
 
@@ -21,7 +23,7 @@ def place_autosuggest(country, currency, locale, query):
     places = requests.get(url, headers={'api-key': 'skyscanner-hackupc2019'})
 
     if places.status_code == 200:
-        return places.json()
+        return places.json()['Places']
 
 
 def get_route_average_emission(origin, destination):
@@ -48,7 +50,12 @@ class LiveResults:
         print('Creating session')
         try:
             response = requests.post(url=self.url, headers=self.headers, json=self.params)
-            self.response_key = response.json()['session_id']
+
+            try:
+                self.response_key = response.json()['session_id']
+            except json.decoder.JSONDecodeError:
+                self.create_session()
+
             self.get_headers = {'api-key': 'skyscanner-hackupc2019', "Accept": "application/json"}
         except KeyError:
             self.create_session()
@@ -64,10 +71,14 @@ class LiveResults:
                 url = "https://www.skyscanner.net/g/chiron/api/v1/flights/search/pricing/v1.0?session_id={}" \
                     .format(self.response_key)
 
-                results = requests.get(url=url, headers=self.get_headers)
-                print(results.json()['Status'])
-                if results.json()['Status'] == 'UpdatesComplete':
-                    return results.json()
+                try:
+                    results = requests.get(url=url, headers=self.get_headers).json()
+                except json.decoder.JSONDecodeError:
+                    self.poll_results()
+
+                print(results['Status'])
+                if results['Status'] == 'UpdatesComplete':
+                    return results
             elif response.status_code == 429:
                 print('There have been too many requests in the past minute. Retrying...')
                 self.poll_results()
@@ -79,8 +90,13 @@ class LiveResults:
 
         results = requests.get(url=url, headers=self.get_headers, params=params)
         results = ResultTransformer(results.json()).transform_results()
-        return sorted(results, key=lambda r: r['PricingOptions'][0]['Price'])
 
+        try:
+            results = ResultTransformer(results.json()).transform_results()
+        except json.decoder.JSONDecodeError:
+            self.filter_results()
+
+        return sorted(results, key=lambda r: r['PricingOptions'][0]['Price'])
 
 
 if __name__ == '__main__':
@@ -107,11 +123,11 @@ if __name__ == '__main__':
     obj = LiveResults(params)
     obj.poll_results()
     results = obj.filter_results()
-    import time
-    t = time.time()
-    results = sorted(results, key=lambda r: r['PricingOptions'][0]['Price'])
-    print(time.time() - t)
-    print([r['PricingOptions'][0]['Price'] for r in results])
-    # print(place_autosuggest(country, currency, locale, 'Paris'))
+    # import time
+    # t = time.time()
+    # results = sorted(results, key=lambda r: r['PricingOptions'][0]['Price'])
+    # print(time.time() - t)
+    # print([r['PricingOptions'][0]['Price'] for r in results])
+    print(place_autosuggest(country, currency, locale, 'BCN'))
     # print(flight_search_cached(country, currency, locale, origin, destination, departure_date, return_date))
-    #print(get_route_average_emission(origin, destination))
+    # print(get_route_average_emission(origin, destination))
