@@ -1,9 +1,9 @@
 <template>
-<div id = "welcome">
-<h1>Welcome to our greenest website</h1>
-<h3>we will calculate the carbon emmission of your trip</h3>
-<p>SO YOU BETTER WATCH OUT</p>
-</div>
+<el-container id="welcome">
+  <h1>AY MATE</h1>
+  <h3>FUCK POLUTION YO</h3>
+  <p>SO YOU BETTER WATCH OUT</p>
+</el-container>
 </template>
 
 <script>
@@ -15,10 +15,9 @@ export default {
 <style scoped>
 #welcome{
   text-align: left;
+  display: inline-block;
   color: white;
-  font-size: 30px;
-  padding-top: 60px;
+  font-size: 2em;
   padding-left: 100px;
-  line-height: 30px;
 }
 </style>

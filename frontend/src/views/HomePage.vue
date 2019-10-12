@@ -1,5 +1,5 @@
 <template>
-<div id = "background">
+<div id="background">
 <Welcome />
 <FTD />
 </div>
@@ -22,12 +22,12 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 #background{
   background-image: url("../assets/vacation.jpg");
-  padding-bottom: 800px;
-  max-width: 200%;
-  object-fit: cover;
-  height: 3px;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 </style>
