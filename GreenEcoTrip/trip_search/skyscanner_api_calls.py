@@ -1,5 +1,5 @@
 import requests
-from .utilities import ResultTransformer
+from utilities import ResultTransformer
 import json
 
 
@@ -96,6 +96,7 @@ class LiveResults:
             self.filter_results()
         results_by_stops = sorted(results, key=lambda r: len(r['OutboundLegId']['Stops']))
 
+        index = 0
         for i, r in enumerate(results_by_stops):
             if len(r['OutboundLegId']['Stops']) > 0:
                 index = i

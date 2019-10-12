@@ -6,10 +6,11 @@ import googlemaps
 import datetime
 
 
-def calculate_seconds_from_date(departure_date):
-    departure_date = datetime.datetime.strptime(departure_date, '%Y-%m-%d').date()
-    base_date = datetime.date(year=1970, month=1, day=1)
-    return (departure_date - base_date).total_seconds()
+def calculate_seconds_from_date(departure_date, time):
+    departure_datetime = departure_date + 'T' + time
+    departure_date = datetime.datetime.strptime(departure_datetime, '%Y-%m-%dT%H:%M:%S')
+    base_date = datetime.datetime(year=1970, month=1, day=1, hour=0, minute=0, second=0)
+    return int((departure_date - base_date).total_seconds())
 
 
 class GMapsWrapper:
@@ -32,16 +33,13 @@ class GMapsWrapper:
         )
         return airports
 
-    def transit_routes_between(self, start, terminal, departure_date=datetime.date.today().isoformat()):
+    def transit_routes_between(self, start, terminal, departure_date=datetime.date.today().isoformat(),
+                               time=datetime.time(hour=0, minute=0, second=0).isoformat()):
         '''
         transit_routes_between gets the alternative transport options between start and terminal
         '''
-        params = {
-            'mode': 'transit',
-            'alternatives': True,
-        }
 
-        departure_time = calculate_seconds_from_date(departure_date)
+        departure_time = calculate_seconds_from_date(departure_date, time)
 
         return list(map(Directions, self.client.directions(
             start,
