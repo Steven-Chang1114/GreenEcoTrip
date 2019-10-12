@@ -1,12 +1,12 @@
 <template>
 <div>
 <div id = "base">
- <el-row class="demo-autocomplete" :gutter="5">
+ <el-row class="demo-autocomplete" :gutter="7">
   <el-col :span="7" :offset="1">
     <p><b> From</b><i class="el-icon-map-location"></i></p>
     <el-autocomplete
       class="inline-input"
-      v-model="state1"
+      v-model="departLoc"
       :fetch-suggestions="querySearch"
       placeholder="City"
       :trigger-on-focus="false"
@@ -17,9 +17,8 @@
   <el-col :span="7" >
     <p><b>To</b><i class="el-icon-place"></i></p>
     <el-autocomplete
-      id = "a"
       class="inline-input"
-      v-model="state2"
+      v-model="destination"
       :fetch-suggestions="querySearch"
       placeholder="City"
       :trigger-on-focus="false"
@@ -27,10 +26,10 @@
     ></el-autocomplete>
   </el-col>
   <el-col :span="6">
-    <Date id = "date"/>
+    <Date id = "date" showTop/>
   </el-col>
 </el-row>
-<el-button type="success" id = "submit" plain><h3>Let's start the trip!<i class="el-icon-magic-stick"></i></h3></el-button>
+<router-link to="/result"><el-button v-on:click="makeOrder" type="success" id = "submit" plain><h3>Let's start the trip!<i class="el-icon-magic-stick"></i></h3></el-button></router-link>
 </div>
 </div>
 </template>
@@ -38,52 +37,65 @@
 import Date from './Date.vue'
 
 export default {
-    components:{
-      Date
+  components:{
+    Date
+  },
+  name: "FTD",
+  data() {
+    return {
+      links: [],
+    };
+  },
+  methods: {
+    querySearch(queryString, cb) {
+      var links = this.links;
+      var results = queryString ? links.filter(this.createFilter(queryString)) : links;
+      // call callback function to return suggestions
+      cb(results);
     },
-    name: "FTD",
-    data() {
-      return {
-        links: [],
-        state1: '',
-        state2: ''
+    createFilter(queryString) {
+      return (link) => {
+        return (link.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
       };
     },
-    methods: {
-      querySearch(queryString, cb) {
-        var links = this.links;
-        var results = queryString ? links.filter(this.createFilter(queryString)) : links;
-        // call callback function to return suggestions
-        cb(results);
+    loadAll() {
+      return [
+        { "value": "Shanghai"},
+        { "value": "Beijing"},
+        { "value": "Hongkong"},
+        { "value": "London"},
+        { "value": "Edinburgh"},
+        { "value": "Manchester"},
+        { "value": "Barcelona"},
+        { "value": "Valencia"},
+        { "value": "Paris"},
+        { "value": "Glascow"},
+        { "value": "Madrid"}
+        ];
+    },
+  },
+  mounted() {
+    this.links = this.loadAll();
+  },
+  computed: {
+    departLoc: {
+      get () {
+        return this.$store.state.departureLocation
       },
-      createFilter(queryString) {
-        return (link) => {
-          return (link.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-        };
-      },
-      loadAll() {
-        return [
-          { "value": "Shanghai"},
-          { "value": "Beijing"},
-          { "value": "Hongkong"},
-          { "value": "London"},
-          { "value": "Edinburgh"},
-          { "value": "Manchester"},
-          { "value": "Barcelona"},
-          { "value": "Valencia"},
-          { "value": "Paris"},
-          { "value": "Glascow"},
-          { "value": "Madrid"}
-         ];
-      },
-      handleSelect(item) {
-        console.log(item);
+      set (val) {
+        this.$store.commit('updateDeparture', val)
       }
     },
-    mounted() {
-      this.links = this.loadAll();
+    destination: {
+      get () {
+        return this.$store.state.destination
+      },
+      set (val) {
+        this.$store.commit('updateDestination', val)
+      }
     }
   }
+}
 </script>
 
 <style>
