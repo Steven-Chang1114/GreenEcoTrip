@@ -26,15 +26,15 @@
     <el-main v-loading="!trips.length">
       <el-card class="box-card" width="100%" v-for="trip in trips" :key="trip.id">
         <div slot="header" class="clearfix">
-          <span>Carbon emission: {{trip.carbon}} kL</span><span style = "margin-left:70px;">Price: {{trip.price}} $</span>
+          <span>Carbon emission: {{(trip.emission).toFixed(0)}} kg</span><span style = "margin-left:70px;" v-if="trip.price">Price: {{trip.price}} $</span>
           <el-button style="float: right; padding: 3px 0" type="text">Book</el-button>
         </div>
         <el-steps :space="200" :active="1" simple >
           <fragment v-for="(step, index) in trip.steps" :key="step.id">
-            <el-step v-if="index==0" :title="step.start">
+            <el-step v-if="index==0" :title="step.origin.name">
               <font-awesome-icon :icon="getIcon(step.type)" slot="icon"/>
             </el-step>
-            <el-step :title="step.end" simple>
+            <el-step :title="step.destination.name || step.destination.Name" simple>
               <font-awesome-icon :icon="getIcon(step.type)" slot="icon"/>
             </el-step>
           </fragment>
@@ -50,7 +50,6 @@
 import Date from './components/Date'
 import F from './components/F'
 import Banner from './components/Banner'
-import { mapState } from 'vuex'
 
   export default {
     name: "Result",
@@ -71,10 +70,61 @@ import { mapState } from 'vuex'
           default:
             break;
         }
+      },
+      parseFlights(flights) {
+        let f = []
+        for (const flightIdx in flights) {
+          const flight = flights[flightIdx];
+          let steps = []
+          for (const stepIdx in flight.OutboundLegId.SegmentIds) {
+            const segment = flight.OutboundLegId.SegmentIds[stepIdx]
+            if (segment.Id === undefined) {
+              continue
+            }
+            steps.push({
+              id: segment.Id,
+              origin: segment.OriginStation,
+              destination: segment.DestinationStation,
+              type: 'flight',
+              departure: segment.Departure,
+              arrival: segment.Arrival,
+            })
+          }
+          f.push({
+            steps,
+            emission: flight.Emissions
+          })
+        }
+        return f
+      },
+      parseTrains(trains, k) {
+        let t = []
+        for (const tripIdx in trains) {
+          const details = trains[tripIdx].Details
+          let steps = [{
+            id: k + tripIdx,
+            origin: details[0].transit_detail.departure_stop,
+            destination: details[details.length - 1].transit_detail.arrival_stop,
+            departure: details[0].transit_detail.departure_time.text,
+            arrival: details[0].transit_detail.arrival_time.text,
+            type: 'rail'
+          }]
+          t.push({
+            steps,
+            emission: trains[tripIdx].Emissions
+          })
+        }
+        return t
       }
     },
     computed: {
-      ...mapState(['trips'])
+      trips() {
+        const trips = this.$store.state.trips
+        const flights = this.parseFlights(trips.Planes)
+        const trains = this.parseTrains(trips.Trains)
+        console.log(flights)
+        return trains.concat(flights)
+      }
     }
   };
 </script>
