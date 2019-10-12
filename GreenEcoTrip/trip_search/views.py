@@ -1,13 +1,20 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from json import loads
+from .skyscanner_api_calls import LiveResults
+from .google_api_calls import GMapsWrapper
+from .utilities import calculate_flight_emission
 
 
 # Create your views here.
 
+@csrf_exempt
 def result_view(request):
-    if request.method == "GET":
-        pass
-
+    if request.method == "POST":
+        body_unicode = request.body.decode('utf-8')
+        data = loads(body_unicode)
+        return JsonResponse(get_routes(data))
 
 def get_routes(params):
     train_obj = GMapsWrapper('AIzaSyCUPvUnI4COqOfF73iRo32tRd8wQp_M4f8')

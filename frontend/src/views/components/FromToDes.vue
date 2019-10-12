@@ -91,7 +91,7 @@ export default {
       let date = this.$store.state.tripInterval
       console.log(date)
       let dstr = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
-      fetch('http://localhost:8000/result', {method: 'POST',
+      fetch('http://localhost:8000/home/results/', {method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
