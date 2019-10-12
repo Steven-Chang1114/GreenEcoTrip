@@ -29,7 +29,7 @@
     <Date id = "date"/>
   </el-col>
 </el-row>
-<el-button v-on:click="makeOrder" type="success" id = "submit" plain><router-link to="/about"><h3>Let's start the trip!<i class="el-icon-magic-stick"></i></h3></router-link></el-button>
+<router-link to="/about"><el-button v-on:click="makeOrder" type="success" id = "submit" plain><h3>Let's start the trip!<i class="el-icon-magic-stick"></i></h3></el-button></router-link>
 </div>
 </div>
 </template>
