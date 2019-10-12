@@ -1,6 +1,5 @@
 <template>
 <div>
-    <p><b>Departure</b><i class="el-icon-date"></i><span id="arrive"><b>Arrive</b><i class="el-icon-place"></i></span></p>
   <div class="block">  
     <el-date-picker  
       v-model="date"
@@ -15,8 +14,13 @@
 </template>
 
 <script>
+import Date from './components/Date.vue'
+
   export default {
-    name: "Date",
+    components: {
+      date: Date.date,
+    },
+    name: "Result",
     data() {
       return {
         pickerOptions: {
@@ -27,9 +31,3 @@
     }
   };
 </script>
-
-<style>
-#arrive{
-    margin-left: 122px;
-}
-</style>
