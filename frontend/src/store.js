@@ -5,10 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    departureLocation: String,
-    destination: String,
-    departureTime: String,
-    arrivalTime: String,
+    departureLocation: '',
+    destination: '',
+    departureTime: '',
+    arrivalTime: '',
   },
   mutations: {
     updateDeparture(state, departureLocation) {
