@@ -43,21 +43,16 @@
 
 <script>
 import Date from './components/Date'
-import SwitchPage from './components/SwitchPage'
-import Timeline from './components/Timeline'
 import F from './components/F'
 
   export default {
     name: "Result",
     components: {
       Date,
-      SwitchPage,
-      Timeline,
       F
     },
     data() {
       return {
-        tableData: Array(20).fill(item),
         trips: [
         {
           id: 0,
