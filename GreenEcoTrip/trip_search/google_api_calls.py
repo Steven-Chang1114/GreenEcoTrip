@@ -30,7 +30,8 @@ class GMapsWrapper:
         return list(map(Directions, self.client.directions(
             start,
             terminal,
-            mode='transit'
+            mode='transit',
+            alternatives=True
         )))
 
 class Directions:
@@ -73,10 +74,21 @@ class Directions:
         '''
         return reduce(lambda acc, x: acc + x['distance']['value'], self.path['legs'], 0)
 
-'''
+    def filter_transit_steps(self):
+        '''
+        Gives transit steps
+        '''
+        for leg in self.path['legs']:
+            for step in leg['steps']:
+                if step.get('travel_mode') == 'TRANSIT':
+                    yield {
+                        'distance': step['distance'],
+                        'duration': step['duration'],
+                        'transit_detail': step['transit_details']
+                    }
+
 if __name__ == '__main__':
     import json
     a = GMapsWrapper('AIzaSyCUPvUnI4COqOfF73iRo32tRd8wQp_M4f8')
     s = a.transit_routes_between('Princes Street', 'London')[0]
-    print(s.calculate_carbon_footprint())
-'''
+    print(json.dumps(list(s.filter_transit_steps())))
