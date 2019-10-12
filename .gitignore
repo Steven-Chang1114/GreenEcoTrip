@@ -183,5 +183,7 @@ ENV/
 env.bak/
 venv.bak/
 pip-selfcheck.json
+*.idea/
+share/
 
 # End of https://www.gitignore.io/api/venv,python,django
