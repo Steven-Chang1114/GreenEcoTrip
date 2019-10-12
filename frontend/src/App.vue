@@ -40,7 +40,7 @@ import HomePage from './views/HomePage.vue'
 export default {
   name: 'app',
   components: {
-    HomePage
+
   }
 }
 </script>

@@ -22,7 +22,7 @@
         pickerOptions: {
  
         },
-        date: '',
+        date: Date.date,
       };
     }
   };
