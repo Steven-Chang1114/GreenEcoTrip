@@ -9,7 +9,7 @@
   text-color="#fff"
   active-text-color="#ffd04b">
   <el-menu-item index="1" ><router-link to="/"><i class="el-icon-s-promotion"></i></router-link></el-menu-item>
-  <el-menu-item index="2"><router-link to="/result"><i class="el-icon-info"></i></router-link></el-menu-item>
+  <el-menu-item index="2" disabled><i class="el-icon-info"></i></el-menu-item>
   <el-submenu index="2">
     <template slot="title"><i class="el-icon-s-comment"></i></template>
     <el-menu-item index="2-1">简体中文</el-menu-item>
@@ -35,8 +35,6 @@
 </template>
 
 <script>
-import HomePage from './views/HomePage.vue'
-
 export default {
   name: 'app',
   components: {
