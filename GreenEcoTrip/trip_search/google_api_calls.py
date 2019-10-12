@@ -38,13 +38,14 @@ class Directions:
     Contains methods for parsing GMaps directions response
     '''
 
+    # kg of CO_2 per person per meter
     footprint_table = {
-        "METRO_RAIL": 500,
-        "HEAVY_RAIL": 500,
-        "COMMUTER_TRAIN": 500,
-        "HIGH_SPEED_TRAIN": 500,
-        "LONG_DISTANCE_TRAIN": 500,
-        "BUS": 500,
+        "METRO_RAIL": 0.032 / 1000,
+        "HEAVY_RAIL": 0.032 / 1000,
+        "COMMUTER_TRAIN": 0.032 / 1000,
+        "HIGH_SPEED_TRAIN": 0.032 / 1000,
+        "LONG_DISTANCE_TRAIN": 0.032 / 1000,
+        "BUS": 0.070 / 1000,
     }
 
     def __init__(self, directions):
