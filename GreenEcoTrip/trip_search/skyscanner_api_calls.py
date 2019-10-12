@@ -2,7 +2,6 @@ import requests
 from utilities import ResultTransformer
 import json
 
-
 def flight_search_cached(country, currency, locale, origin, destination, departure_date, return_date=None):
     url = "https://www.skyscanner.net/g/chiron/api/v1/flights/browse/browseroutes/v1.0/"
     params = '{}/{}/{}/{}/{}/{}/'.format(country, currency, locale, origin, destination, departure_date)
@@ -12,7 +11,6 @@ def flight_search_cached(country, currency, locale, origin, destination, departu
 
     if routes.status_code == 200:
         content = routes.json()
-
 
     return content
 
@@ -123,11 +121,7 @@ if __name__ == '__main__':
     obj.poll_results()
     results = obj.filter_results()
     results += obj.filter_results(1)
-    # import time
-    # t = time.time()
-    # results = sorted(results, key=lambda r: r['PricingOptions'][0]['Price'])
-    # print(time.time() - t)
-    # print([r['PricingOptions'][0]['Price'] for r in results])
+
     print(place_autosuggest(country, currency, locale, 'BCN'))
-    # print(flight_search_cached(country, currency, locale, origin, destination, departure_date, return_date))
+
     # print(get_route_average_emission(origin, destination))
