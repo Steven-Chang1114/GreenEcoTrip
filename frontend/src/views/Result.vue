@@ -42,20 +42,24 @@
     </el-card>
     
   </el-main>
+  <Banner />
   </el-container>
 </el-container>
+
 </div>
 </template>
 
 <script>
 import Date from './components/Date'
 import F from './components/F'
+import Banner from './components/Banner'
 
   export default {
     name: "Result",
     components: {
       Date,
-      F
+      F,
+      Banner
     },
     methods: {
       getIcon(type) {
