@@ -1,5 +1,6 @@
 import requests
 from utilities import ResultTransformer
+import json
 
 
 def flight_search_cached(country, currency, locale, origin, destination, departure_date, return_date=None):
@@ -89,7 +90,6 @@ class LiveResults:
             .format(self.response_key)
 
         results = requests.get(url=url, headers=self.get_headers, params=params)
-        results = ResultTransformer(results.json()).transform_results()
 
         try:
             results = ResultTransformer(results.json()).transform_results()
