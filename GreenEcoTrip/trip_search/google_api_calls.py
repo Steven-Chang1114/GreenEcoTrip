@@ -6,7 +6,7 @@ import googlemaps
 import datetime
 
 
-def calculate_time(departure_date):
+def calculate_seconds_from_date(departure_date):
     departure_date = datetime.datetime.strptime(departure_date, '%Y-%m-%d').date()
     base_date = datetime.date(year=1970, month=1, day=1)
     return (departure_date - base_date).total_seconds()
@@ -32,15 +32,23 @@ class GMapsWrapper:
         )
         return airports
 
-    def transit_routes_between(self, start, terminal, departure_time=None):
+    def transit_routes_between(self, start, terminal, departure_date=datetime.date.today().isoformat()):
         '''
         transit_routes_between gets the alternative transport options between start and terminal
         '''
+        params = {
+            'mode': 'transit',
+            'alternatives': True,
+        }
+
+        departure_time = calculate_seconds_from_date(departure_date)
+
         return list(map(Directions, self.client.directions(
             start,
             terminal,
             mode='transit',
-            alternatives=True
+            alternatives=True,
+            departure_time=departure_time,
         )))
 
 
@@ -84,7 +92,6 @@ class Directions:
         '''
         return reduce(lambda acc, x: acc + x['distance']['value'], self.path['legs'], 0)
 
-
     def filter_transit_steps(self):
         '''
         Gives transit steps
@@ -95,12 +102,15 @@ class Directions:
                     yield {
                         'distance': step['distance'],
                         'duration': step['duration'],
-                        'transit_detail': step['transit_details']
+                        'transit_detail': step['transit_details'],
+                        'emissions': self.calculate_carbon_footprint()
                     }
+
 
 if __name__ == '__main__':
     import json
+
     a = GMapsWrapper('AIzaSyCUPvUnI4COqOfF73iRo32tRd8wQp_M4f8')
     s = a.transit_routes_between('Princes Street', 'London')[0]
-    print(s.calculate_carbon_footprint())
-    print(calculate_time('1971-01-01'))
+    a.nearby_airports('Edinburgh Airport', radius=50000)
+    print("MY ASS IN YOUR FACE")

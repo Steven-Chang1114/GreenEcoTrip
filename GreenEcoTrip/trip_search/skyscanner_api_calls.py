@@ -35,14 +35,6 @@ def get_route_average_emission(origin, destination):
         return emission
 
 
-def calculate_flight_emission(leg):
-    duration = 0
-    for seg in leg['SegmentIds'][:-1]:
-        duration += seg['Duration']
-
-    hours = duration / 60
-    return hours * 800 * 0.202
-
 
 class LiveResults:
     def __init__(self, params=None):
@@ -123,7 +115,6 @@ if __name__ == '__main__':
         'originPlace': origin,
         'destinationPlace': destination,
         'outboundDate': departure_date,
-        'inboundDate': return_date,
         'adults': 1
     }
 
