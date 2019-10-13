@@ -97,13 +97,15 @@ export default {
           country: 'UK',
           currency: 'GBP',
           locale: 'en-UK',
-          origin: lookup[this.departLoc],
-          destination: lookup[this.destination],
-          departureDate: dstr
+          originPlace: lookup[this.departLoc],
+          destinationPlace: lookup[this.destination],
+          outboundDate: dstr,
+          adults: 1
         })
       })
       .then(res => res.json())
-      .then(data => this.$state.commit('loadFlights', data))
+      .then(data => this.$store.commit('updateTrips', data))
+      this.$store.commit('updateTrips', {flights: [], trains: []})
 
       this.$router.push({path: '/result'})
     }
@@ -135,18 +137,15 @@ export default {
   padding-top: 5px;
   margin-left: 10px;
 }
-
 .inline-input {
   display: inline;
 }
-
 #base{
   background-color: rgba(0,0,0,0.4);
   border-radius: 10px;
   padding: 2rem;
 }
 #submit{
-  margin-top: 2rem;
+  margin-top: 0.5rem;
 }
-
 </style>
