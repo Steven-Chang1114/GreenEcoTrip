@@ -1,5 +1,6 @@
 <template>
   <el-card class="box-card" width="100%">
+    <GreenTips :emission="emission" :max="max"/>
     <el-row :gutter="50">
       <el-col :span="8">
         <h2>Depart: {{depart}}</h2>
@@ -30,9 +31,14 @@
 </template>
 
 <script>
+import GreenTips from './GreenTips'
+
 export default {
   name: "TravelCard",
   props: ['trip'],
+  components: {
+    GreenTips
+  },
   computed: {
     depart() {
       if (this.type === 'Flight') {
