@@ -28,7 +28,9 @@
     </el-col>
   </el-row>
   <center >
-  <el-button v-on:click="travelSearch" type="success" id = "submit" plain><h3>Let's start the trip!<i class="el-icon-magic-stick"></i></h3></el-button>
+  <el-button v-on:click="travelSearch" type="success" id="submit" plain>
+    <span style="font-size: 2em;">Let's start the trip!<i class="el-icon-magic-stick"></i></span>
+  </el-button>
   </center>
   </div>
 </div>
@@ -36,20 +38,6 @@
 
 <script>
 import Date from './Date.vue'
-
-const lookup = {
-  Shanghai: "",
-  Beijing: "",
-  Hongkong: "",
-  London: "LHR-sky",
-  Edinburgh: "EDI-sky",
-  Manchester: "MAN-sky",
-  Barcelona: "BCN-sky",
-  Valencia: "",
-  Paris: "CDG-sky",
-  Glascow: "",
-  Madrid: "MAD-sky",
-}
 
 export default {
   components:{
@@ -97,8 +85,8 @@ export default {
           country: 'UK',
           currency: 'GBP',
           locale: 'en-UK',
-          originPlace: lookup[this.departLoc],
-          destinationPlace: lookup[this.destination],
+          originPlace: this.departLoc,
+          destinationPlace: this.destination,
           outboundDate: dstr,
           adults: 1
         })
@@ -146,6 +134,6 @@ export default {
   padding: 2rem;
 }
 #submit{
-  margin-top: 0.5rem;
+  margin-top: 2rem;
 }
 </style>
