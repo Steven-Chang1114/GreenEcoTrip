@@ -16,11 +16,11 @@
 </template>
 
 <script>
-import image from '../../assets/rainforest.jpg'
+import image1 from '../../assets/rainforest1.jpg'
 import image2 from '../../assets/rainforest2.jpg'
 import image3 from '../../assets/rainforest3.jpg'
 import image4 from '../../assets/rainforest4.jpg'
-import image5 from '../../assets/rainforest5.jpeg'
+import image5 from '../../assets/rainforest5.jpg'
 import image6 from '../../assets/rainforest6.jpg'
 
 export default {
@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       items: [{
-          img: image,
+          img: image1,
           txt: "It’s time to get your car checked up! If your engine is working efficiently and your tires are well inflated, your car will consume the least fuel, and you won’t crash on a traffic light!"
       },{
         img: image2,

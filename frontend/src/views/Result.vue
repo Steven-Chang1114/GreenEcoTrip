@@ -1,6 +1,6 @@
 <template>
 <el-container>
-  <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+  <el-aside width="200px" style="background-color: rgb(238, 241, 246);">
     <el-menu :default-openeds="['1', '3']">
       <el-submenu index="2">
         <template slot="title"><i class="el-icon-menu"></i>Filter</template>
@@ -23,12 +23,14 @@
       </el-row>
     </el-header>
 
-    <el-main v-loading="!trips.length">
+    <el-main style="height: 580px;" v-loading="!trips.length">
+
       <el-card class="box-card" width="100%" v-for="trip in trips" :key="trip.id">
         <div slot="header" class="clearfix">
           <span>Carbon emission: {{(trip.emission).toFixed(0)}} kg</span><span style = "margin-left:70px;" v-if="trip.price">Price: {{trip.price}} $</span>
           <el-button style="float: right; padding: 3px 0" type="text">Book</el-button>
         </div>
+
         <el-steps :space="200" :active="1" simple >
           <fragment v-for="(step, index) in trip.steps" :key="step.id">
             <el-step v-if="index==0" :title="step.origin.name">
@@ -39,7 +41,9 @@
             </el-step>
           </fragment>
         </el-steps>
+        
       </el-card>
+
     </el-main>
     <Banner />
   </el-container>
