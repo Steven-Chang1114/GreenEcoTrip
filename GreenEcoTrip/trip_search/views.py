@@ -2,11 +2,12 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from json import loads
-from .skyscanner_api_calls import LiveResults, place_autosuggest
-from .google_api_calls import GMapsWrapper
-from .utilities import calculate_flight_emission, TrainResultTransformer
+from skyscanner_api_calls import LiveResults, place_autosuggest
+from google_api_calls import GMapsWrapper
+from utilities import calculate_flight_emission, TrainResultTransformer
 import numpy as np
 import datetime
+import requests
 
 
 # Create your views here.
@@ -36,8 +37,8 @@ def get_train_routes(params):
 def get_routes(params):
     train_results = get_train_routes(params)
 
-    params['originPlace'] = get_airport_code(params['originPlace'])
-    params['destinationPlace'] = get_airport_code(params['destinationPlace'])
+    params['originPlace'] = get_airport_code(params, params['originPlace'])
+    params['destinationPlace'] = get_airport_code(params, params['destinationPlace'])
 
     flight_obj = LiveResults(params)
     flight_obj.poll_results()
@@ -51,9 +52,17 @@ def get_routes(params):
     return results
 
 
-def get_airport_code(place_name):
+def get_airport_code(params, place_name):
     place = place_autosuggest(params['country'], params['currency'], params['locale'], place_name)
     return place[0]['PlaceName']
+""""
+def carbon_offset(emission):
+    url = 'https://api.cloverly.com/2019-03-beta/purchases/carbon'
+    headers = {'Content-type': 'application/json', 'Authorization': 'Bearer private_key:6352a4f5b8cf5a82'}
+    data = '{"weight":{"value":%d,"units":"kg"}}' % (emission)
+    r = requests.post(url, headers=headers, data=data)
+    print(r.text)
+"""
 
 
 if __name__ == '__main__':
@@ -76,5 +85,4 @@ if __name__ == '__main__':
         'adults': 1
     }
     results = get_routes(params)
-
-    print('einef')
+    carbon_offset(results['Planes'][0]['Emissions'])
