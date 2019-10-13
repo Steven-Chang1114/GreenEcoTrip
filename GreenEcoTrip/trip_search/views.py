@@ -67,15 +67,11 @@ def get_routes(params):
     train_emissions = [r['Emissions'] for r in train_results]
     planes_emissions = [r['Emissions'] for r in flight_results]
 
-    yellow_threshold = np.percentile(train_emissions, 75)
-    red_threshold = np.percentile(planes_emissions, 25)
     max_emissions = np.max(planes_emissions)
 
     results = {
         'Trains': sorted(train_results, key=lambda x: x['Emissions']),
         'Planes': sorted(flight_results, key=lambda x: x['Emissions']),
-        'yellow_threshold': yellow_threshold,
-        'red_threshold': red_threshold,
         'max': max_emissions
 
     }
