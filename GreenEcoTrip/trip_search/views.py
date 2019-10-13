@@ -54,7 +54,7 @@ def get_routes(params):
 
 def get_airport_code(params, place_name):
     place = place_autosuggest(params['country'], params['currency'], params['locale'], place_name)
-    return place[0]['PlaceName']
+    return place[0]['PlaceId']
 """"
 def carbon_offset(emission):
     url = 'https://api.cloverly.com/2019-03-beta/purchases/carbon'
@@ -70,8 +70,8 @@ if __name__ == '__main__':
     currency = 'EUR'
     locale = 'en-UK'
 
-    origin = 'CDG-sky'
-    destination = 'EDI-sky'
+    origin = 'Paris'
+    destination = 'Edinburgh'
     departure_date = '2019-12-03'
     return_date = '2019-12-10'
 
@@ -85,4 +85,4 @@ if __name__ == '__main__':
         'adults': 1
     }
     results = get_routes(params)
-    carbon_offset(results['Planes'][0]['Emissions'])
+    #carbon_offset(results['Planes'][0]['Emissions'])
