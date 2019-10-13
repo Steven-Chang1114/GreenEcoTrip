@@ -1,8 +1,8 @@
 <template>
-<el-dialog title="Shipping address" :visible.sync="dialogTableVisible">
+<el-dialog title="Green Tips" :visible.sync="dialogTableVisible">
   <div class="gallery">
     <div class="gallery-image">
-      <img src="../../assets/greenhills.jpg" width="800" height="600" />
+      <img src="../../assets/greenhills.jpg" width="600" height="400" />
       <div class="gallery-text">
         <h3>{{popup(emission, max)}}</h3>
       </div>
@@ -14,10 +14,10 @@
 <script>
 export default {
   name: "GreenTips",
-  props: ['emission', 'max'],
+  props: ['emission', 'max', 'dialogTableVisible'],
   methods: {
     popup(emission, max) {
-      co2Data = {
+      const co2Data = {
           'lamb': 39.2,
           'beef': 27.0,
           'cheese': 13.5,
@@ -34,22 +34,16 @@ export default {
           case 'lamb':
             return 'Were thinking of having lamb curry tonight? This trip will produce as much CO2 as eating ' + value +' kg of lamb,' +
                         ' so how about switching to lentils for a while?';
-              break;
           case 'beef':
               return "This trip will produce as much CO2 as " + value +" kg of beef. That's so many McRibs... maybe next time, or a quinoa burger instead!.";
-              break;
           case 'cheese':
               return "This trip will produce as much CO2 as " + value +" kg of cheese. That's enough to make Stuart Little lactose intolerant."
               + ' Try some vegain dairy products!';
-              break;
           case 'mile':
               return "This trip produces the equivalent amount of CO2 as driving for " + value + " miles. Maybe commute to work next week!";
-              break;
           case 'new clothes':
               return "I know going shopping can be tempting, but by choosing this trip you'd actually produce the " +
                   "same amount of CO2 as buying " + value + " kg of new clothes";
-              break;
-
       }
     }
   }
@@ -57,4 +51,10 @@ export default {
 </script>
 
 <style>
+.gallery-text h3{
+  color: white;
+  display: inline-table;
+  vertical-align:middle;
+  line-height:100%;            
+}
 </style>

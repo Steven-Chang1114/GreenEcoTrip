@@ -1,6 +1,6 @@
 <template>
-  <el-card class="box-card" width="100%">
-    <GreenTips :emission="emission" :max="max"/>
+  <el-card class="box-card" width="100%" @click.native="dialogVisible=true">
+    <GreenTips :dialogTableVisible="dialogVisible" :emission="emission" :max="max"/>
     <el-row :gutter="50">
       <el-col :span="8">
         <h2>Depart: {{depart}}</h2>
@@ -11,10 +11,18 @@
     </el-row>
     <div slot="header" class="clearfix">
       <span>
-        <strong><h4>Carbon emission:</h4></strong>
-        {{(emission).toFixed(0)}} kg
-      <img :src="image" style="float: right; margin-right: 50px" v-if="image" height="20"/>
+        <center>
+          <strong><h3>Carbon emission: {{(emission).toFixed(0)}} kg</h3></strong>
+          <el-progress
+            :width="64"
+            type="circle"
+            :percentage="emissionPercentage"
+            :show-text="false"
+            :colors="colors"
+            ></el-progress>
+        </center>
       </span>
+      <img :src="image" style="float: right; margin-right: 50px" v-if="image" height="100%"/>
       <span style = "margin-left:70px;" v-if="price">Price: {{price}} $</span>
     </div>
     <el-steps :space="200" :active="1" simple >
@@ -39,7 +47,22 @@ export default {
   components: {
     GreenTips
   },
+  data() {
+    return {
+      dialogVisible: false,
+      colors: [
+        {color: '#f56c6c', percentage: 20},
+        {color: '#e6a23c', percentage: 40},
+        {color: '#5cb87a', percentage: 60},
+        {color: '#1989fa', percentage: 80},
+        {color: '#6f7ad3', percentage: 100}
+      ],
+    }
+  },
   computed: {
+    emissionPercentage() {
+      return this.emission * 100 / this.$store.state.trips.max
+    },
     depart() {
       if (this.type === 'Flight') {
         const t = new Date(this.trip.OutboundLegId.Departure)
