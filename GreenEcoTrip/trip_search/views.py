@@ -19,13 +19,15 @@ def result_view(request):
         data = loads(body_unicode)
         return JsonResponse(get_routes(data))
 
+
 import random
+
 
 def offset_view(request):
     if request.method == "GET":
         """""Dictionary containing data per kg given CO2 emissions"""
         co2_data = {
-            'lamb': 39.2, #'CO2 per kg'
+            'lamb': 39.2,  # 'CO2 per kg'
             'beef': 27.0,
             'cheese': 13.5,
             'mile': 2.25,
@@ -62,9 +64,20 @@ def get_routes(params):
     flight_obj.poll_results()
     flight_results = flight_obj.filter_results()
 
+    train_emissions = [r['Emissions'] for r in train_results]
+    planes_emissions = [r['Emissions'] for r in flight_results]
+
+    yellow_threshold = np.percentile(train_emissions, 75)
+    red_threshold = np.percentile(planes_emissions, 25)
+    max_emissions = np.max(planes_emissions)
+
     results = {
         'Trains': sorted(train_results, key=lambda x: x['Emissions']),
-        'Planes': sorted(flight_results, key=lambda x: x['Emissions'])
+        'Planes': sorted(flight_results, key=lambda x: x['Emissions']),
+        'yellow_threshold': yellow_threshold,
+        'red_threshold': red_threshold,
+        'max': max_emissions
+
     }
 
     return results
@@ -73,6 +86,8 @@ def get_routes(params):
 def get_airport_code(params, place_name):
     place = place_autosuggest(params['country'], params['currency'], params['locale'], place_name)
     return place[0]['PlaceId']
+
+
 """"
 def carbon_offset(emission):
     url = 'https://api.cloverly.com/2019-03-beta/purchases/carbon'
@@ -81,7 +96,6 @@ def carbon_offset(emission):
     r = requests.post(url, headers=headers, data=data)
     print(r.text)
 """
-
 
 if __name__ == '__main__':
     country = 'UK'
@@ -103,4 +117,5 @@ if __name__ == '__main__':
         'adults': 1
     }
     results = get_routes(params)
-    #carbon_offset(results['Planes'][0]['Emissions'])
+
+    carbon_offset(results['Planes'][0]['Emissions'])
