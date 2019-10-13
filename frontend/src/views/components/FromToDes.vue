@@ -41,7 +41,7 @@ const lookup = {
   Shanghai: "",
   Beijing: "",
   Hongkong: "",
-  London: "",
+  London: "LHR-sky",
   Edinburgh: "EDI-sky",
   Manchester: "MAN-sky",
   Barcelona: "BCN-sky",

@@ -45,7 +45,8 @@
   <el-button-group style = "margin-left:40px; margin-right: 20px">
     <el-button icon="el-icon-minus" @click="decrease"></el-button>
     <el-button icon="el-icon-plus" @click="increase"></el-button>
-  </el-button-group><br><br>
+  </el-button-group>
+  <el-divider></el-divider><br>
 </div>
 
   </div>
