@@ -2,9 +2,9 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from json import loads
-from skyscanner_api_calls import LiveResults, place_autosuggest
-from google_api_calls import GMapsWrapper
-from utilities import calculate_flight_emission, TrainResultTransformer
+from .skyscanner_api_calls import LiveResults, place_autosuggest
+from .google_api_calls import GMapsWrapper
+from .utilities import calculate_flight_emission, TrainResultTransformer
 import numpy as np
 import datetime
 import requests

@@ -40,82 +40,82 @@
 import Date from './Date.vue'
 
 export default {
-  components:{
-    Date
+components:{
+  Date
+},
+name: "FTD",
+data() {
+  return {
+    links: [
+      { "value": "Shanghai"},
+      { "value": "Beijing"},
+      { "value": "Hongkong"},
+      { "value": "London"},
+      { "value": "Edinburgh"},
+      { "value": "Manchester"},
+      { "value": "Barcelona"},
+      { "value": "Valencia"},
+      { "value": "Paris"},
+      { "value": "Glascow"},
+      { "value": "Madrid"}
+    ],
+  };
+},
+methods: {
+  querySearch(queryString, cb) {
+    var links = this.links;
+    var results = queryString ? links.filter(this.createFilter(queryString)) : links;
+    // call callback function to return suggestions
+    cb(results);
   },
-  name: "FTD",
-  data() {
-    return {
-      links: [
-        { "value": "Shanghai"},
-        { "value": "Beijing"},
-        { "value": "Hongkong"},
-        { "value": "London"},
-        { "value": "Edinburgh"},
-        { "value": "Manchester"},
-        { "value": "Barcelona"},
-        { "value": "Valencia"},
-        { "value": "Paris"},
-        { "value": "Glascow"},
-        { "value": "Madrid"}
-      ],
+  createFilter(queryString) {
+    return (link) => {
+      return (link.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
     };
   },
-  methods: {
-    querySearch(queryString, cb) {
-      var links = this.links;
-      var results = queryString ? links.filter(this.createFilter(queryString)) : links;
-      // call callback function to return suggestions
-      cb(results);
-    },
-    createFilter(queryString) {
-      return (link) => {
-        return (link.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-      };
-    },
-    travelSearch() {
-      let date = this.$store.state.tripInterval
-      let dstr = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
-      fetch('http://localhost:8000/home/results/', {method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          country: 'UK',
-          currency: 'GBP',
-          locale: 'en-UK',
-          originPlace: this.departLoc,
-          destinationPlace: this.destination,
-          outboundDate: dstr,
-          adults: 1
-        })
+  travelSearch() {
+    let date = this.$store.state.tripInterval
+    let dstr = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+    fetch('http://localhost:8000/home/results/', {method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        country: 'UK',
+        currency: 'GBP',
+        locale: 'en-UK',
+        originPlace: this.departLoc,
+        destinationPlace: this.destination,
+        outboundDate: dstr,
+        adults: 1
       })
-      .then(res => res.json())
-      .then(data => this.$store.commit('updateTrips', data))
-      this.$store.commit('updateTrips', {flights: [], trains: []})
+    })
+    .then(res => res.json())
+    .then(data => this.$store.commit('updateTrips', data))
+    this.$store.commit('updateTrips', {Planes: [], Trains: []})
 
-      this.$router.push({path: '/result'})
+    this.$router.push({path: '/result'})
+  }
+},
+computed: {
+  departLoc: {
+    get () {
+      return this.$store.state.departureLocation
+    },
+    set (val) {
+      this.$store.commit('updateDeparture', val)
     }
   },
-  computed: {
-    departLoc: {
-      get () {
-        return this.$store.state.departureLocation
-      },
-      set (val) {
-        this.$store.commit('updateDeparture', val)
-      }
+  destination: {
+    get () {
+      return this.$store.state.destination
     },
-    destination: {
-      get () {
-        return this.$store.state.destination
-      },
-      set (val) {
-        this.$store.commit('updateDestination', val)
-      }
+    set (val) {
+      this.$store.commit('updateDestination', val)
     }
   }
+}
 }
 </script>
 
