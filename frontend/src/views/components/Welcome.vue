@@ -1,8 +1,8 @@
 <template>
 <el-container id="welcome">
   <h1>Travel4Future</h1>
-  <h3>FUCK POLUTION YO</h3>
-  <p>SO YOU BETTER WATCH OUT</p>
+  <h3>By travellers, for travellers and a healthier planet</h3>
+  <p>The first sustainable travel platform devoted to raise awareness of people's impact on the world in an original and friendly way.</p>
 </el-container>
 </template>
 

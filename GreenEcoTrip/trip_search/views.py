@@ -19,6 +19,24 @@ def result_view(request):
         data = loads(body_unicode)
         return JsonResponse(get_routes(data))
 
+import random
+
+def offset_view(request):
+    if request.method == "GET":
+        """""Dictionary containing data per kg given CO2 emissions"""
+        co2_data = {
+            'lamb': 39.2, #'CO2 per kg'
+            'beef': 27.0,
+            'cheese': 13.5,
+            'mile': 2.25,
+            'new clothes': 25,
+        }
+        emission = request.GET['emissions']
+        element = random.choice(list(co2_data.keys()))
+        quantity = emission / co2_data[element]
+        return JsonResponse({'item': element, 'value': quantity})
+
+
 def get_train_routes(params):
     train_obj = GMapsWrapper('AIzaSyCUPvUnI4COqOfF73iRo32tRd8wQp_M4f8')
     train_origin = params['originPlace']
