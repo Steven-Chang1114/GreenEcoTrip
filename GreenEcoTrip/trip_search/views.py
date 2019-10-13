@@ -18,6 +18,7 @@ def result_view(request):
         data = loads(body_unicode)
         return JsonResponse(get_routes(data))
 
+
 def get_train_routes(params):
     train_obj = GMapsWrapper('AIzaSyCUPvUnI4COqOfF73iRo32tRd8wQp_M4f8')
     train_origin = transform_place_flight_to_train(params, 'originPlace')
@@ -31,6 +32,7 @@ def get_train_routes(params):
         train_results += train_result
 
     return train_results
+
 
 def get_routes(params):
     train_results = get_train_routes(params)
@@ -73,4 +75,5 @@ if __name__ == '__main__':
         'adults': 1
     }
     results = get_routes(params)
+
     print('einef')

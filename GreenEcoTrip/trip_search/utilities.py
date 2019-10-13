@@ -168,4 +168,4 @@ def calculate_flight_emission(leg):
         duration += seg['Duration']
 
     hours = duration / 60
-    return hours * 800 * 0.202
+    return hours * 90 * (2/0.8)
