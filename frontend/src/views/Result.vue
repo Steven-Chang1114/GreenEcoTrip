@@ -126,7 +126,6 @@ import Banner from './components/Banner'
         const trips = this.$store.state.trips
         const flights = this.parseFlights(trips.Planes)
         const trains = this.parseTrains(trips.Trains)
-        console.log(flights)
         return trains.concat(flights)
       }
     }
