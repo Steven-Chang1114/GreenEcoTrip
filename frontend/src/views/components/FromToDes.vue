@@ -137,18 +137,15 @@ export default {
   padding-top: 5px;
   margin-left: 10px;
 }
-
 .inline-input {
   display: inline;
 }
-
 #base{
   background-color: rgba(0,0,0,0.4);
   border-radius: 10px;
   padding: 2rem;
 }
 #submit{
-  margin-top: 2rem;
+  margin-top: 0.5rem;
 }
-
 </style>
