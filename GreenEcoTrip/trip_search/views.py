@@ -18,11 +18,10 @@ def result_view(request):
         data = loads(body_unicode)
         return JsonResponse(get_routes(data))
 
-
 def get_train_routes(params):
     train_obj = GMapsWrapper('AIzaSyCUPvUnI4COqOfF73iRo32tRd8wQp_M4f8')
-    train_origin = transform_place_flight_to_train(params, 'originPlace')
-    train_destination = transform_place_flight_to_train(params, 'destinationPlace')
+    train_origin = params['originPlace']
+    train_destination = params['destinationPlace']
 
     train_results = []
     for i in np.linspace(4, 20, 5):
@@ -37,6 +36,9 @@ def get_train_routes(params):
 def get_routes(params):
     train_results = get_train_routes(params)
 
+    params['originPlace'] = get_airport_code(params['originPlace'])
+    params['destinationPlace'] = get_airport_code(params['destinationPlace'])
+
     flight_obj = LiveResults(params)
     flight_obj.poll_results()
     flight_results = flight_obj.filter_results()
@@ -49,9 +51,8 @@ def get_routes(params):
     return results
 
 
-def transform_place_flight_to_train(params, station):
-    clean_place_id = params[station].split('-')[0]
-    place = place_autosuggest(params['country'], params['currency'], params['locale'], clean_place_id)
+def get_airport_code(place_name):
+    place = place_autosuggest(params['country'], params['currency'], params['locale'], place_name)
     return place[0]['PlaceName']
 
 
