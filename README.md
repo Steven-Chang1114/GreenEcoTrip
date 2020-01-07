@@ -9,6 +9,6 @@ Furthermore, in the design are included small tips and tricks to apply in your d
 The project has been developed using Django Framework and Vue.js, using SkyScanner API and Google Maps Direction API.
 ### Team
 Cheng Kai           -[ck210400@protonmail.ch](hck210400@protonmail.ch)\
-Steven Chandler     -[stevenchang.ztl@gmail.com](stevenchang.ztl@sgmail.com)\
+Steven Chang     -[stevenchang.ztl@gmail.com](stevenchang.ztl@sgmail.com)\
 Vittorio Trettenero -[trettenero.vittorio@gmail.com](trettenero.vittorio@gmail.com)\
 Paolo Di Dio        -[paolo.didio@studenti.unipd.it](paolo.didio@studenti.unipd.it)
